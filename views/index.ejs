@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<title>Diffudle</title>
+
+	<!-- Semantic CDN -->
+	<link rel="stylesheet" type="text/css" href="semantic-ui/semantic.min.css">
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"
+		integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+	<script src="semantic-ui/semantic.min.js"></script>
+
+	<!-- CSS File -->
+	<link href="css/main.css" rel="stylesheet">
+
+</head>
+
+<body class="ui inverted segment">
+
+	<!--Navigation-->
+	<nav class="ui inverted menu">
+		<div class="header item">
+			Diffudle
+		</div>
+		<div class="right menu">
+			<a class="item">How to play</a>
+			<a class="item">Stats</a>
+			<a class="item">Settings</a>
+		</div>
+	</nav>
+
+	<!-- Heading -->
+	<div class="ui inverted segment">
+		<h1 class="ui huge center aligned teal header">
+			Guess the stable diffusion prompt
+		</h1>
+	</div>
+
+	<!-- SD generated pic -->
+	<div class="ui inverted segment">
+		<img class="ui centered large rounded image" src="/img/sample.png">
+	</div>
+
+	<!-- Attempts box -->
+	<div class="ui inverted segment">
+		<p class="ui huge center aligned teal header"> Attempt No. : 1</p>
+	</div>
+
+	<!-- Prompt Text-->
+	<div>
+		<div class="diffudle-box">
+			<div class="diffudle-box-content">V</div>
+		</div>
+
+		<div class="diffudle-box">
+			<div class="diffudle-box-content">L</div>
+		</div>
+
+		<div class="diffudle-box">
+			<div class="diffudle-box-content">A</div>
+		</div>
+
+		<div class="diffudle-box">
+		</div>
+
+		<div class="diffudle-box">
+		</div>
+
+		<div class="diffudle-box">
+		</div>
+
+		<div class="diffudle-space">
+		</div>
+
+		<div class="diffudle-box">
+			<div class="diffudle-box-content">V</div>
+		</div>
+
+		<div class="diffudle-box">
+			<div class="diffudle-box-content">L</div>
+		</div>
+
+		<div class="diffudle-box">
+		</div>
+
+		<div class="diffudle-box">
+			<div class="diffudle-box-content">L</div>
+		</div>
+
+	</div>
+
+	<!-- Style Text-->
+	<div>
+		<p class="ui medium center aligned teal header"> stock photo, high key lighting, photograph </p>
+	</div>
+
+	<!-- Virtual Keyboard link: https://codepen.io/joe-watkins/pen/DGzwwJ-->
+	<div class="output">
+		<input type="text" name="output" id="output" placeholder="Virtual Keyboard" class="output-input">
+	</div>
+
+	<div class="virtual-keyboard">
+		<div class="virtual-keyboard-row">
+			<input type="button" value="q" class = "virtual-keyboard-row-button">
+			<input type="button" value="w" class = "virtual-keyboard-row-button">
+			<input type="button" value="e" class = "virtual-keyboard-row-button">
+			<input type="button" value="r" class = "virtual-keyboard-row-button">
+			<input type="button" value="t" class = "virtual-keyboard-row-button">
+			<input type="button" value="y" class = "virtual-keyboard-row-button">
+			<input type="button" value="u" class = "virtual-keyboard-row-button">
+			<input type="button" value="i" class = "virtual-keyboard-row-button">
+			<input type="button" value="o" class = "virtual-keyboard-row-button">
+			<input type="button" value="p" class = "virtual-keyboard-row-button">
+		</div >
+		<div class="virtual-keyboard-row">
+			<input type="button" value="a" class = "virtual-keyboard-row-button">
+			<input type="button" value="s" class = "virtual-keyboard-row-button">
+			<input type="button" value="d" class = "virtual-keyboard-row-button">
+			<input type="button" value="f" class = "virtual-keyboard-row-button">
+			<input type="button" value="g" class = "virtual-keyboard-row-button">
+			<input type="button" value="h" class = "virtual-keyboard-row-button">
+			<input type="button" value="j" class = "virtual-keyboard-row-button">
+			<input type="button" value="k" class = "virtual-keyboard-row-button">
+			<input type="button" value="l" class = "virtual-keyboard-row-button">
+		</div>
+		<div class="virtual-keyboard-row">
+			<input type="button" value="z" class = "virtual-keyboard-row-button">
+			<input type="button" value="x" class = "virtual-keyboard-row-button">
+			<input type="button" value="c" class = "virtual-keyboard-row-button">
+			<input type="button" value="v" class = "virtual-keyboard-row-button">
+			<input type="button" value="b" class = "virtual-keyboard-row-button">
+			<input type="button" value="n" class = "virtual-keyboard-row-button">
+			<input type="button" value="m" class = "virtual-keyboard-row-button">
+			<input type="button" value="delete" class="virtual-keyboard-row-button delete">
+
+		</div>
+		<div class="virtual-keyboard-row">
+			<input type="button" value="                                                                            " class="virtual-keyboard-row-button">
+			<input type="button" value="Enter" class="virtual-keyboard-row-button enter ">
+		</div>
+	</div>
+	<!--// virtual-keyboard -->
+
+
+
+
+	<!-- Custom scripts for this template -->
+	<script src="js/main.js"></script>
+
+</body>
+
+</html>
