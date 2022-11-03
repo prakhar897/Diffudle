@@ -38,13 +38,13 @@
 	<!-- Heading -->
 	<div class="ui inverted segment">
 		<h1 class="ui huge center aligned teal header">
-			Guess the stable diffusion prompt
+			Guess AI prompt for this image.
 		</h1>
 	</div>
 
 	<!-- SD generated pic -->
 	<div class="ui inverted segment">
-		<img class="ui centered large rounded image" src="/img/sample.png">
+		<img class="ui centered large rounded image"  src="<%= question.image %>">
 	</div>
 
 	<!-- Attempts box -->
@@ -53,96 +53,65 @@
 	</div>
 
 	<!-- Prompt Text-->
-	<div>
-		<div class="diffudle-box">
-			<div class="diffudle-box-content">V</div>
+	<div class="ui container">
+		<div class="ui sixteen column grid" id="promptDiv">
+			<% for (var i=0;i< question.name.length;i++){ %>
+				<div class="column">
+					<div class="diffudle-box">
+						<% if(currentVisiblePosition.includes(i) || question.name[i] == "/"){ %>
+							<p class="diffudle-box-content"><%=question.name[i]%></p>
+						<% } %>
+					</div>
+				</div>
+			<% } %>
+			
 		</div>
-
-		<div class="diffudle-box">
-			<div class="diffudle-box-content">L</div>
-		</div>
-
-		<div class="diffudle-box">
-			<div class="diffudle-box-content">A</div>
-		</div>
-
-		<div class="diffudle-box">
-		</div>
-
-		<div class="diffudle-box">
-		</div>
-
-		<div class="diffudle-box">
-		</div>
-
-		<div class="diffudle-space">
-		</div>
-
-		<div class="diffudle-box">
-			<div class="diffudle-box-content">V</div>
-		</div>
-
-		<div class="diffudle-box">
-			<div class="diffudle-box-content">L</div>
-		</div>
-
-		<div class="diffudle-box">
-		</div>
-
-		<div class="diffudle-box">
-			<div class="diffudle-box-content">L</div>
-		</div>
-
 	</div>
 
 	<!-- Style Text-->
-	<div>
+	<div class="ui inverted segment">
 		<p class="ui medium center aligned teal header"> stock photo, high key lighting, photograph </p>
 	</div>
 
-	<!-- Virtual Keyboard link: https://codepen.io/joe-watkins/pen/DGzwwJ-->
+	<!-- Virtual Keyboard -->
 	<div class="output">
 		<input type="text" name="output" id="output" placeholder="Virtual Keyboard" class="output-input">
 	</div>
 
 	<div class="virtual-keyboard">
 		<div class="virtual-keyboard-row">
-			<input type="button" value="q" class = "virtual-keyboard-row-button">
-			<input type="button" value="w" class = "virtual-keyboard-row-button">
-			<input type="button" value="e" class = "virtual-keyboard-row-button">
-			<input type="button" value="r" class = "virtual-keyboard-row-button">
-			<input type="button" value="t" class = "virtual-keyboard-row-button">
-			<input type="button" value="y" class = "virtual-keyboard-row-button">
-			<input type="button" value="u" class = "virtual-keyboard-row-button">
-			<input type="button" value="i" class = "virtual-keyboard-row-button">
-			<input type="button" value="o" class = "virtual-keyboard-row-button">
-			<input type="button" value="p" class = "virtual-keyboard-row-button">
-		</div >
-		<div class="virtual-keyboard-row">
-			<input type="button" value="a" class = "virtual-keyboard-row-button">
-			<input type="button" value="s" class = "virtual-keyboard-row-button">
-			<input type="button" value="d" class = "virtual-keyboard-row-button">
-			<input type="button" value="f" class = "virtual-keyboard-row-button">
-			<input type="button" value="g" class = "virtual-keyboard-row-button">
-			<input type="button" value="h" class = "virtual-keyboard-row-button">
-			<input type="button" value="j" class = "virtual-keyboard-row-button">
-			<input type="button" value="k" class = "virtual-keyboard-row-button">
-			<input type="button" value="l" class = "virtual-keyboard-row-button">
+			<input type="button" value="q" class="virtual-keyboard-row-button">
+			<input type="button" value="w" class="virtual-keyboard-row-button">
+			<input type="button" value="e" class="virtual-keyboard-row-button">
+			<input type="button" value="r" class="virtual-keyboard-row-button">
+			<input type="button" value="t" class="virtual-keyboard-row-button">
+			<input type="button" value="y" class="virtual-keyboard-row-button">
+			<input type="button" value="u" class="virtual-keyboard-row-button">
+			<input type="button" value="i" class="virtual-keyboard-row-button">
+			<input type="button" value="o" class="virtual-keyboard-row-button">
+			<input type="button" value="p" class="virtual-keyboard-row-button">
 		</div>
 		<div class="virtual-keyboard-row">
-			<input type="button" value="z" class = "virtual-keyboard-row-button">
-			<input type="button" value="x" class = "virtual-keyboard-row-button">
-			<input type="button" value="c" class = "virtual-keyboard-row-button">
-			<input type="button" value="v" class = "virtual-keyboard-row-button">
-			<input type="button" value="b" class = "virtual-keyboard-row-button">
-			<input type="button" value="n" class = "virtual-keyboard-row-button">
-			<input type="button" value="m" class = "virtual-keyboard-row-button">
+			<input type="button" value="a" class="virtual-keyboard-row-button">
+			<input type="button" value="s" class="virtual-keyboard-row-button">
+			<input type="button" value="d" class="virtual-keyboard-row-button">
+			<input type="button" value="f" class="virtual-keyboard-row-button">
+			<input type="button" value="g" class="virtual-keyboard-row-button">
+			<input type="button" value="h" class="virtual-keyboard-row-button">
+			<input type="button" value="j" class="virtual-keyboard-row-button">
+			<input type="button" value="k" class="virtual-keyboard-row-button">
+			<input type="button" value="l" class="virtual-keyboard-row-button">
+		</div>
+		<div class="virtual-keyboard-row">
 			<input type="button" value="delete" class="virtual-keyboard-row-button delete">
-
-		</div>
-		<div class="virtual-keyboard-row">
-			<input type="button" value="                                                                            " class="virtual-keyboard-row-button">
-			<input type="button" value="Enter" class="virtual-keyboard-row-button enter ">
+			<input type="button" value="z" class="virtual-keyboard-row-button">
+			<input type="button" value="x" class="virtual-keyboard-row-button">
+			<input type="button" value="c" class="virtual-keyboard-row-button">
+			<input type="button" value="v" class="virtual-keyboard-row-button">
+			<input type="button" value="b" class="virtual-keyboard-row-button">
+			<input type="button" value="n" class="virtual-keyboard-row-button">
+			<input type="button" value="m" class="virtual-keyboard-row-button">
+			<input type="button" value="Submit" class="virtual-keyboard-row-button submit">
 		</div>
 	</div>
 	<!--// virtual-keyboard -->

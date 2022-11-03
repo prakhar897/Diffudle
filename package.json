@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/prakhar897/Diffudle#readme",
   "dependencies": {
+    "@google-cloud/firestore": "^6.4.1",
     "body-parser": "^1.20.1",
     "dotenv": "^16.0.3",
     "ejs": "^3.1.8",

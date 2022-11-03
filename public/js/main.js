@@ -1,45 +1,69 @@
 var $keyboardWrapper = $('.virtual-keyboard'),
-    $key = $keyboardWrapper.find("input"),
-    $key_delete = $('.delete'),
-    $key_enter = $('.enter'),
-    $outputField = $('.output input'),
-    $currentValue = $outputField.val(),
-    actionKeys = $(".delete,.shift")
-    activeShiftClass = "shift-activated";
+  $key = $keyboardWrapper.find("input"),
+  $key_delete = $('.delete'),
+  $key_submit = $('.submit'),
+  $outputField = $('.output input'),
+  $currentValue = $outputField.val(),
+  actionKeys = $(".delete,.submit")
 
-// handle keystrokes
-function _keystroke(keyCase){
-  
-  $key.not(actionKeys).on('click',function(e){
-    e.preventDefault();
-    var keyValue = $(this).val().toLowerCase();
-    
-    // grab current value
-    var output = $('.output input').val();
-        $outputField.val(output + keyValue);
-        getCurrentVal();
-        focusOutputField();
-  });
-  
-} // keystroke
-  
+
 // delete
-$key_delete.on('click',function(e){
+$key_delete.on('click', function (e) {
   e.preventDefault();
-  $outputField.val($currentValue.substr(0,$currentValue.length - 1));
-  getCurrentVal();
-  focusOutputField();
+  var promptDivChildrens = document.getElementById('promptDiv').children;
+
+    for (var i = promptDivChildrens.length - 1; i >=0 ; i--) {
+      if (promptDivChildrens[i].children[0].children[0] != null && promptDivChildrens[i].children[0].children[0].textContent != "/") {
+        promptDivChildrens[i].children[0].innerHTML = "";
+        break;
+      }
+    }
+});
+
+// submit
+$key_submit.on('click', function (e) {
+  e.preventDefault();
+  var promptDivChildrens = document.getElementById('promptDiv').children;
+  var guessedPrompt = "";
+  for (var i = 0; i < promptDivChildrens.length; i++) {
+    if(promptDivChildrens[i].children[0].children[0] == null){
+      return;
+    }
+    guessedPrompt += promptDivChildrens[i].children[0].children[0].textContent;
+  }
+  console.log(guessedPrompt);
+
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", "/", true);
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.send(JSON.stringify({
+    guessedPrompt: guessedPrompt
+  }));
 });
 
 // grab current value of typed text
-function getCurrentVal(){
+function getCurrentVal() {
   $currentValue = $outputField.val();
 }
 
-// focus for cursor hack
-function focusOutputField(){
-  $outputField.focus();
+function _fillPrompts() {
+  $key.not(actionKeys).on('click', function (e) {
+    e.preventDefault();
+    var keyValue = $(this).val().toUpperCase();
+    var promptDivChildrens = document.getElementById('promptDiv').children;
+
+    for (var i = 0; i < promptDivChildrens.length; i++) {
+      if (promptDivChildrens[i].children[0].children[0] == null) {
+        promptDivChildrens[i].children[0].innerHTML += "<p class='diffudle-box-content'>" + keyValue + "</p>";
+        break;
+      }
+    }
+
+
+  });
 }
 
-_keystroke("lower"); // init keystrokes
+
+
+_fillPrompts();
 

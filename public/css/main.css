@@ -1,59 +1,51 @@
-
-  
-
-  
-  h1 {
-    color:#26ABDE;
-  }
-  
-    .virtual-keyboard-row{
-      text-align:center;
-      margin:0 0 15px;
-    }
-    .spacebar-input {
-        padding:10px 150px;
-      }
-    .virtual-keyboard-row-button{
-      padding:10px 20px;
-      border-radius:30px;
-      border:3px solid #202C2B;
-      background:#13AB9E;
-      color:#fff;
-      text-transform:uppercase;
-      
-    }
-
-    .delete, .enter {
-        text-transform:none;
-    }
-  
-  .output {
-    margin:15px;
-  }
-
-  .output-input {
-    color:white;
-    background:black;
-    border:0px;
-    line-height:2.2em;
-    text-align:center;
-    font-size:2em;
-    width:100%;
-  }
-
-.diffudle-box{
-    height: 48.1px;
-    font-size: 30px;
-    box-sizing: border-box;
-    border-width: 0px;
-    border-style: solid;
-    border-color: rgb(229, 231, 235);
+h1 {
+    color: #26ABDE;
 }
 
-.diffudle-box-content{
-    position: absolute;
-    inset: 0px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.virtual-keyboard-row {
+    text-align: center;
+    margin: 0 0 15px;
+}
+
+.virtual-keyboard-row-button {
+    padding: 10px 20px;
+    border-radius: 30px;
+    border: 3px solid #202C2B;
+    background: #13AB9E;
+    color: #fff;
+    text-transform: uppercase;
+
+}
+
+.delete,
+.submit {
+    text-transform: none;
+}
+
+.output {
+    margin: 15px;
+}
+
+.output-input {
+    color: white;
+    background: black;
+    border: 0px;
+    line-height: 2.2em;
+    text-align: center;
+    font-size: 2em;
+    width: 100%;
+    display: none;
+}
+
+.diffudle-box {
+    height: 36px;
+    width: 36px;
+    font-size: 24px;
+    border-radius: 5%;
+    background: #26ABDE;
+}
+
+.diffudle-box-content {
+    border: 1px solid green;
+    text-align: center;
 }
