@@ -1,11 +1,21 @@
-var mongoose = require('mongoose');
+class Question {
 
-const Question = mongoose.model('question', new mongoose.Schema({
-	name: String,
-    image: String,
-    style: String,
-    attemptNumber: String,
-    date: String
-}));
+    constructor(name, style, image, attemptNumber, date) {
+        this.name = name || null;
+        this.attemptNumber = attemptNumber || null;
+        this.date = date || null;
+        this.style = style || null;
+        this.image = image || null;
+    }
 
-module.exports = Question
+    getName(){
+        return this.name;
+    }
+
+    setName(name){
+        this.name = name;
+    }
+};
+
+
+module.exports = Question;

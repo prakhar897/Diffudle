@@ -1,20 +1,21 @@
-var mongoose = require('mongoose');
+class User {
 
-const User = mongoose.model('user', new mongoose.Schema({
-    IPAddress: String,
-    AttemptNumber: {
-        type: Map,
-        of: String,
-        default: {}
-    },
-    Success: {
-        type: Map,
-        of: Boolean,
-        default: {}
-    },
-    CurrentVisiblePositions: [Number]
-}));
+    constructor(ipAddress, attemptNumber, success, currentVisiblePositions) {
+        this.ipAddress = ipAddress || null;
+        this.attemptNumber = attemptNumber || {};
+        this.success = success || {};
+        this.currentVisiblePositions = currentVisiblePositions || [];
+        
+    }
 
+    getIPAddress(){
+        return this.ipAddress;
+    }
 
-module.exports = User
+    setIPAddress(ipAddress){
+        this.ipAddress = ipAddress;
+    }
+};
+
+module.exports = User;
 

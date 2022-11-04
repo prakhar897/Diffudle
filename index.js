@@ -1,11 +1,10 @@
 var express = require("express");
 var app = express();
-var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var dotenv = require('dotenv');
 var User = require('./models/user');
 var Question = require('./models/question');
-const FirestoreClient = require('./FirestoreClient');
+const FirestoreClient = require('./clients/FirestoreClient');
 
 var TOTAL_QUESTIONS = 3;
 
@@ -18,103 +17,58 @@ app.use(express.static(__dirname + "/public"));
 
 
 
-var url = process.env.DATABASEURL;
-mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
+app.get('/', async function (req, res) {
 
+    let now = new Date().toISOString().split('T')[0];
+    let user = await FirestoreClient.getCollection('users', req.ip);
 
+    if (!user) {
+        let newUser = new User(req.ip, {},{}, []);
+        newUser.attemptNumber[now] = 1;
+        newUser.success[now] = false;
+        await FirestoreClient.save('users',req.ip, newUser);
+        user = newUser;
+    }
 
-app.get('/', function (req, res) {
+    if (user.attemptNumber[now] == null) {
+        user.attemptNumber[now] = 1;
+        user.success[now] = false;
+        await FirestoreClient.save('users', req.ip, user);
+    }
 
-    let now = new Date().toLocaleDateString();
+    const questionRefId = now + "--" + user.attemptNumber[now];
+    const question = await FirestoreClient.getCollection('questions', questionRefId);
 
-    await FirestoreClient.save('users', abc);
-
-
-    User.findOne({
-        IPAddress: req.ip
-    }, function (err, user) {
-
-        if (!user) {
-            let newUser = new User({
-                IPAddress: req.ip,
-                CurrentVisiblePositions: [],
-                AttemptNumber: {},
-                Success: {}
-            });
-            
-            let abc = {
-                IPAddress: req.ip,
-                CurrentVisiblePositions: [],
-                AttemptNumber: {},
-                Success: {},
-                Id: req.ip
-            };
-
-            newUser.AttemptNumber.set(now, 1);
-            newUser.Success.set(now, false);
-
-            User.create(newUser);
-            
-            user = newUser;
-        }
-
-        if (user.AttemptNumber.get(now) == null) {
-            user.AttemptNumber.set(now, 1);
-            user.Success.set(now, false);
-            user.save();
-        }
-
-
-        
-        
-        
-
-        Question.findOne({
-            date: now,
-            attemptNumber: user.AttemptNumber.get(now) % TOTAL_QUESTIONS
-        }, function (err, question) {
-            console.log(question);
-            res.render('index', { stats: user.stats, currentVisiblePosition: user.CurrentVisiblePositions, question: question });
-        })
-
-
-    });
+    res.render('index', { currentVisiblePosition: user.currentVisiblePositions, question: question });
+    
 });
 
-app.post('/', function (req, res) {
-    let now = new Date().toLocaleDateString();
-    User.findOne({
-        IPAddress: req.ip,
-    }, function (err, user) {
+app.post('/', async function (req, res) {
 
-        Question.findOne({
-            date: now,
-            attemptNumber: user.AttemptNumber.get(now) % TOTAL_QUESTIONS
-        }, function (err, question) {
+    let now = new Date().toISOString().split('T')[0];
 
-            let newVisiblePositions = [];
-            for (var i = 0; i < question.name.length; i++) {
-                if (question.name[i].toLowerCase() == req.body.guessedPrompt[i].toLowerCase()) {
-                    newVisiblePositions.push(i);
-                }
-            }
+    const user = await FirestoreClient.getCollection('users', req.ip);
 
-            user.CurrentVisiblePositions = newVisiblePositions;
-            
-            if (newVisiblePositions.length == question.name.length) {
-                user.Success.set(now, true);
-            } else {
-                user.AttemptNumber.set(now, Number(user.AttemptNumber.get(now)) + 1);
-            }
+    const questionRefId = now + "--" + user.attemptNumber[now];
+    const question = await FirestoreClient.getCollection('questions', questionRefId);
 
-            user.save(function (err, resuult){
-                res.redirect("/");
-            });
-            
-        })
-    });
+    let newVisiblePositions = [];
+    for (var i = 0; i < question.name.length; i++) {
+        if (question.name[i].toLowerCase() == req.body.guessedPrompt[i].toLowerCase()) {
+            newVisiblePositions.push(i);
+        }
+    }
 
+    user.currentVisiblePositions = newVisiblePositions;
+    
+    if (newVisiblePositions.length == question.name.length) {
+        user.success[now] =  true;
+    } else {
+        user.attemptNumber[now]++;
+    }
 
+    await FirestoreClient.save('users', req.ip, user);
+    res.redirect("/");
 
 });
 
