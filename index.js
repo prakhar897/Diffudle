@@ -4,7 +4,9 @@ var bodyParser = require('body-parser');
 var dotenv = require('dotenv');
 var User = require('./models/user');
 var Question = require('./models/question');
-const FirestoreClient = require('./clients/FirestoreClient');
+
+const FirestoreClient = require('./clients/firestoreClient');
+const StatUtils = require('./utils/statUtils');
 
 var TOTAL_QUESTIONS = 3;
 
@@ -14,6 +16,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json())
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
+app.set('trust proxy', true)
 
 
 
@@ -33,13 +36,18 @@ app.get('/', async function (req, res) {
     if (user.attemptNumber[now] == null) {
         user.attemptNumber[now] = 1;
         user.success[now] = false;
+        user.currentVisiblePositions = [];
         await FirestoreClient.save('users', req.ip, user);
     }
 
     const questionRefId = now + "--" + user.attemptNumber[now];
-    const question = await FirestoreClient.getCollection('questions', questionRefId);
+    console.log(questionRefId);
 
-    res.render('index', { currentVisiblePosition: user.currentVisiblePositions, question: question });
+    const question = await FirestoreClient.getCollection('questions', questionRefId);
+    console.log(question);
+
+    const summaryStats = StatUtils.calculateSummaryStats(user.attemptNumber, user.success);
+    res.render('index', {summaryStats: summaryStats, attemptNumber: user.attemptNumber[now], currentVisiblePosition: user.currentVisiblePositions, question: question });
     
 });
 
@@ -48,13 +56,15 @@ app.post('/', async function (req, res) {
     let now = new Date().toISOString().split('T')[0];
 
     const user = await FirestoreClient.getCollection('users', req.ip);
-
     const questionRefId = now + "--" + user.attemptNumber[now];
     const question = await FirestoreClient.getCollection('questions', questionRefId);
 
+    console.log(req.body.guessedPrompt);
+    console.log(question.name);
+
     let newVisiblePositions = [];
     for (var i = 0; i < question.name.length; i++) {
-        if (question.name[i].toLowerCase() == req.body.guessedPrompt[i].toLowerCase()) {
+        if (user.currentVisiblePositions.includes(i) || question.name.toUpperCase()[i] == req.body.guessedPrompt[i]) {
             newVisiblePositions.push(i);
         }
     }
