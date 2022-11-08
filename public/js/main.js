@@ -3,21 +3,9 @@ var $keyboardWrapper = $('.virtual-keyboard'),
 	$key_delete = $('.delete'),
 	$key_submit = $('.submit'),
 	$outputField = $('.output input'),
-	actionKeys = $(".delete,.submit")
-
-
-// delete
-$key_delete.on('click', function (e) {
-	e.preventDefault();
-	var startingEmptyBoxes = document.getElementsByClassName('diffudle-empty-box');
-
-	for (var i = startingEmptyBoxes.length - 1; i >= 0; i--) {
-		if (startingEmptyBoxes[i].children.length > 0) {
-			startingEmptyBoxes[i].innerHTML = "";
-			break;
-		}
-	}
-});
+	actionKeys = $(".delete,.submit"),
+	$key_hint = $('.hint'),
+	$stats_button = $('#stats')
 
 function post(path, params, method = 'post') {
 
@@ -40,8 +28,24 @@ function post(path, params, method = 'post') {
 	form.submit();
 }
 
-// submit
-$key_submit.on('click', function (e) {
+function deleteEvent(e) {
+	e.preventDefault();
+	var startingEmptyBoxes = document.getElementsByClassName('diffudle-empty-box');
+
+	for (var i = startingEmptyBoxes.length - 1; i >= 0; i--) {
+		if (startingEmptyBoxes[i].children.length > 0) {
+			startingEmptyBoxes[i].innerHTML = "";
+			break;
+		}
+	}
+}
+
+function hintEvent(e) {
+	e.preventDefault();
+	post("/hint", {});
+}
+
+function submitEvent(e) {
 	e.preventDefault();
 	var promptDivChildrens = document.getElementById('promptDiv').children;
 	var guessedPrompt = "";
@@ -54,27 +58,63 @@ $key_submit.on('click', function (e) {
 	console.log(guessedPrompt);
 
 	post('/', { 'guessedPrompt': guessedPrompt });
-});
+};
 
-function _fillPrompts() {
-	$key.not(actionKeys).on('click', function (e) {
-		e.preventDefault();
-		var keyValue = $(this).val().toUpperCase();
+function fillPromptsEvent(e) {
+	e.preventDefault();
+	var keyValue = $(this).val().toUpperCase();
 
-		var startingEmptyBoxes = document.getElementsByClassName('diffudle-empty-box');
+	var startingEmptyBoxes = document.getElementsByClassName('diffudle-empty-box');
 
-		for (var i = 0; i < startingEmptyBoxes.length; i++) {
-			if (startingEmptyBoxes[i].children.length == 0) {
-				startingEmptyBoxes[i].innerHTML += "<p class='diffudle-box-content'>" + keyValue + "</p>";
-				break;
-			}
+	for (var i = 0; i < startingEmptyBoxes.length; i++) {
+		if (startingEmptyBoxes[i].children.length == 0) {
+			startingEmptyBoxes[i].innerHTML += "<p class='diffudle-box-content'>" + keyValue + "</p>";
+			break;
 		}
-
-
-	});
+	}
 }
 
 
+const disableButton = () => {
+	$key_delete.off('click', deleteEvent);
+	$key_hint.off('click', hintEvent);
+	$key_submit.off('click', submitEvent);
+	$key.not(actionKeys).off('click', fillPromptsEvent);
 
-_fillPrompts();
+	$(".stats").modal('show');
+};
+
+$key_delete.on('click', deleteEvent);
+$key_hint.on('click', hintEvent);
+$key_submit.on('click', submitEvent);
+$key.not(actionKeys).on('click', fillPromptsEvent);
+
+
+// Popups
+
+$(function(){
+	$("#howToPlay").click(function(){
+		$(".howToPlay").modal('show');
+	});
+	$(".howToPlay").modal({
+		closable: true
+	});
+});
+
+$(function(){
+	$stats_button.click(function(){
+		$(".stats").modal('show');
+	});
+	$(".stats").modal({
+		closable: true
+	});
+});
+
+
+
+
+
+
+
+
 

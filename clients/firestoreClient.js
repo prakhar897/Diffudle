@@ -5,7 +5,7 @@ class FirestoreClient {
     constructor() {
         this.firestore = new Firestore({
             projectId: 'diffudle',
-            keyFilename: (__dirname, './service-account.json')
+            keyFilename: (__dirname, '../KeysManager/Diffudle/service-account.json')
         })
     }
 
