@@ -84,6 +84,23 @@ const disableButton = () => {
 	$(".stats").modal('show');
 };
 
+
+// Keyboard Support
+$(document).ready(function(){
+	$(document).keyup(function(e){
+		e.preventDefault();
+		var keyValue = String.fromCharCode(e.which);
+		if ((keyValue >= 'a' && keyValue <= 'z') || (keyValue >= 'A' && keyValue <= 'Z')){
+			var $keyQuery = $('.virtual-keyboard :input[value=' + keyValue.toLowerCase() + ']');
+			$keyQuery.click();
+		} else if(e.which == 8){
+			$key_delete.click();
+		} else if(e.which == 13){
+			$key_submit.click();
+		}
+	});
+});
+
 $key_delete.on('click', deleteEvent);
 $key_hint.on('click', hintEvent);
 $key_submit.on('click', submitEvent);
@@ -91,15 +108,6 @@ $key.not(actionKeys).on('click', fillPromptsEvent);
 
 
 // Popups
-
-$(function(){
-	$("#howToPlay").click(function(){
-		$(".howToPlay").modal('show');
-	});
-	$(".howToPlay").modal({
-		closable: true
-	});
-});
 
 $(function(){
 	$stats_button.click(function(){

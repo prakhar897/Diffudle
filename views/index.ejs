@@ -41,8 +41,8 @@
 			Diffudle
 		</a>
 		<div class="right menu">
-			<button class="ui button yellow create_btn" type="button" id="howToPlay">How to play</button>
-			<button class="ui button yellow create_btn" type="button" id="stats">Stats</button>
+			<!-- <button class="ui button yellow create_btn" type="button" id="howToPlay">How to play</button> -->
+			<button class="ui button teal create_btn" type="button" id="stats">Stats</button>
 		</div>
 	</nav>
 
@@ -159,64 +159,60 @@
 
 	<!-- How To Play Popup -->
 	<div class="ui modal howToPlay">
-		<i class="close icon"></i>
-		<div class="header">
-			How To Play
-		</div>
-		<div class="content">
-			<h1 class="ui header">Guess the prompt used to generate the image</h1>
-			<h3 class="ui header">The colours of tiles which change to green if a correct letter is guessed.</h3>
-			<div class="ui divider"></div>
-			<h3 class="ui header">A new puzzle is released every midnight.</h3>
-			<div class="ui divider"></div>
-			<h5 class="ui header">Have Feedback? Email us at feedback@diffudle.com</h5>
-		</div>
 	</div>
 
 	<!-- Stats Popup -->
 	<div class="ui modal stats">
 		<i class="close icon"></i>
-		<% if(attemptNumber < 7 && success == true) {%>
-		<div class="header">
-			Congratulations! You win.
-		</div>
-		<%} else if (attemptNumber >= 7){ %>		
-		<div class="header">
-			Better luck tomorrow!
-		</div>	
-		<%}%>
-		<div class="ui divider"></div>
+		<div class="content">
+			<% if(attemptNumber < 7 && success == true) {%>
+			<h2 class="ui center aligned header">
+				Congratulations! You win.
+			</h2>
+			<%} else if (attemptNumber >= 7){ %>		
+			<h2 class="ui center aligned header">
+				Better luck tomorrow!
+			</h2>	
+			<%}%>
 
-		<div class="header">
-			Statistics
-		</div>
-		<div class="ui grid">
-			<div class="four wide column">
-				<div class="ui center aligned secondary segment">
-				<div class="ui statistic">
+			<h4 class="ui center aligned header">
+				Statistics
+			</h4>
+			<div class="ui four statistics">
+				<div class="statistic">
 					<div class="value">
-					   <%=summaryStats.Played%>
+						<%=summaryStats.Played%>
 					</div>
 					<div class="label">
-					   Played
+						Played
 					</div>
-				 </div>
+				</div>
+				<div class="statistic">
+					<div class="value">
+						<%=summaryStats.WinPercentage%>%
+					</div>
+					<div class="label">
+						Win Percentage
+					</div>
+				</div>
+				<div class="statistic">
+					<div class="value">
+						<%=summaryStats.latestStreak%>
+					</div>
+					<div class="label">
+						Latest Streak
+					</div>
+				</div>
+				<div class="statistic">
+					<div class="value">
+						<%=summaryStats.maxStreak%>
+					</div>
+					<div class="label">
+						Max Streak
+					</div>
 				</div>
 			</div>
-			<div class="four wide column">
-				<div class="ui center aligned secondary segment">
-				<div class="ui statistic">
-					<div class="value">
-					   <%=summaryStats.WinPercentage%>
-					</div>
-					<div class="label">
-					   Win Percentage
-					</div>
-				 </div>
-				 </div>
-			</div>
 		</div>
-		<div class="ui divider"></div>
 		
 	</div>
 
