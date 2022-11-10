@@ -49,7 +49,7 @@ app.get('/', async function (req, res) {
 
     const summaryStats = StatUtils.calculateSummaryStats(user.attemptNumber, user.success);
     res.render('index', {summaryStats: summaryStats, attemptNumber: user.attemptNumber[now],
-         currentVisiblePosition: user.currentVisiblePositions, question: question, success: user.success[now] });
+         currentVisiblePosition: user.currentVisiblePositions, question: question, success: user.success[now], name: question.name });
     
 });
 

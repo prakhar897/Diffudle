@@ -17,6 +17,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<meta name="description" content="">
 	<meta name="author" content="">
+	<link rel="icon" href="img/logo.png">
 
 	<title>Diffudle</title>
 
@@ -82,7 +83,7 @@
 
 	<!-- Prompt Text-->
 	<div class="ui container">
-		<div class="ui sixteen column grid" id="promptDiv">
+		<div class="ui doubling sixteen column grid" id="promptDiv">
 			<% for (var i=0;i< question.name.length;i++){ %>
 				<% var boxId = "box-" + i%>
 				<div class="column">
@@ -171,7 +172,7 @@
 			</h2>
 			<%} else if (attemptNumber >= 7){ %>		
 			<h2 class="ui center aligned header">
-				Better luck tomorrow!
+				The quote was: <%=name%>.
 			</h2>	
 			<%}%>
 
