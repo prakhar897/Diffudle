@@ -40,4 +40,30 @@ module.exports = {
 
         return summaryStats;
     },
+
+    shareTwitterLink(currentVisiblePositions, name, date){
+
+        var greenTile = "🟩";
+        var blackTile = "⬛";
+        
+
+        var result = "";
+
+        for(var i=0;i<name.length;i++){
+            if(name[i] == "/" ){
+                result += "/";
+            } else if(currentVisiblePositions.includes(i)){
+                result += greenTile;
+            } else {
+                result += blackTile;
+            }
+        }
+
+        var twitterDate = date.replace("-","").replace("-","");
+        var begin = "https://twitter.com/intent/tweet?";
+        var text= "text=" + result + "%0a%0a";
+        var hashtags="&hashtags=Diffudle,Diffudle_"+twitterDate;
+        var twitterlink = begin+text+hashtags;
+        return twitterlink;
+    }
 };

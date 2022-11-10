@@ -179,7 +179,7 @@
 			<h4 class="ui center aligned header">
 				Statistics
 			</h4>
-			<div class="ui four statistics">
+			<div class="ui doubling four statistics">
 				<div class="statistic">
 					<div class="value">
 						<%=summaryStats.Played%>
@@ -213,6 +213,18 @@
 					</div>
 				</div>
 			</div>
+
+			<% if( success == true || attemptNumber >= 7) {%>
+				<div class="ui divider"></div>
+
+				<div class="ui center aligned container">
+					<a class="ui twitter button" target="_blank" href= <%=twitterLink%>>
+						<i class="twitter icon"></i>
+						Share on Twitter
+					</a>
+				</div>
+			<%}%>
+			
 		</div>
 		
 	</div>
