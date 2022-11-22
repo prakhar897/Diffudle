@@ -28,9 +28,10 @@ app.get('/', async function (req, res) {
 
     if (!user) {
         newUserFlag = true;
-        let newUser = new User(req.ip, {},{}, []);
+        let newUser = new User(req.ip, {},{}, [],{});
         newUser.attemptNumber[now] = 1;
         newUser.success[now] = false;
+        newUser.guessHistory[now] = [];
         await FirestoreClient.save('users',req.ip, newUser);
         user = newUser;
     }
@@ -39,6 +40,7 @@ app.get('/', async function (req, res) {
         user.attemptNumber[now] = 1;
         user.success[now] = false;
         user.currentVisiblePositions = [];
+        user.guessHistory[now] = [];
         await FirestoreClient.save('users', req.ip, user);
     }
 
@@ -62,15 +64,17 @@ app.post('/', async function (req, res) {
     const user = await FirestoreClient.getCollection('users', req.ip);
     const questionRefId = now + "--" + user.attemptNumber[now];
     const question = await FirestoreClient.getCollection('questions', questionRefId);
+    const guessedPrompt = req.body.guessedPrompt;
 
     let newVisiblePositions = [];
     for (var i = 0; i < question.name.length; i++) {
-        if (user.currentVisiblePositions.includes(i) || question.name.toUpperCase()[i] == req.body.guessedPrompt[i]) {
+        if (user.currentVisiblePositions.includes(i) || question.name.toUpperCase()[i] == guessedPrompt[i]) {
             newVisiblePositions.push(i);
         }
     }
 
     user.currentVisiblePositions = newVisiblePositions;
+    user.guessHistory[now].push(guessedPrompt);
     
     if (newVisiblePositions.length == question.name.length) {
         user.success[now] =  true;
