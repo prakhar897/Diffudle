@@ -8,8 +8,7 @@ var Question = require('./models/question');
 
 const FirestoreClient = require('./clients/firestoreClient');
 const StatUtils = require('./utils/statUtils');
-
-var TOTAL_QUESTIONS = 3;
+const AppUtils = require('./utils/appUtils');
 
 
 dotenv.config({ path: path.resolve('../KeysManager/Diffudle/.env') });
@@ -23,10 +22,12 @@ app.set('trust proxy', true)
 
 app.get('/', async function (req, res) {
 
-    let now = new Date().toISOString().split('T')[0];
+    let now = AppUtils.getCurrentDate();
     let user = await FirestoreClient.getCollection('users', req.ip);
+    let newUserFlag = false;
 
     if (!user) {
+        newUserFlag = true;
         let newUser = new User(req.ip, {},{}, []);
         newUser.attemptNumber[now] = 1;
         newUser.success[now] = false;
@@ -51,13 +52,13 @@ app.get('/', async function (req, res) {
     const twitterLink = StatUtils.shareTwitterLink(user.currentVisiblePositions, question.name, now);
     res.render('index', {summaryStats: summaryStats, attemptNumber: user.attemptNumber[now],
          currentVisiblePosition: user.currentVisiblePositions, question: question, success: user.success[now],
-          name: question.name, twitterLink: twitterLink });
+          name: question.name, twitterLink: twitterLink, newUserFlag: newUserFlag });
     
 });
 
 app.post('/', async function (req, res) {
 
-    let now = new Date().toISOString().split('T')[0];
+    let now = AppUtils.getCurrentDate();
     const user = await FirestoreClient.getCollection('users', req.ip);
     const questionRefId = now + "--" + user.attemptNumber[now];
     const question = await FirestoreClient.getCollection('questions', questionRefId);
@@ -84,7 +85,7 @@ app.post('/', async function (req, res) {
 
 app.post('/hint', async function( req , res) {
 
-    let now = new Date().toISOString().split('T')[0];
+    let now = AppUtils.getCurrentDate();
     const user = await FirestoreClient.getCollection('users', req.ip);
     const questionRefId = now + "--" + user.attemptNumber[now];
     const question = await FirestoreClient.getCollection('questions', questionRefId);

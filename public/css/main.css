@@ -2,66 +2,54 @@ h1 {
     color: #26ABDE;
 }
 
-.virtual-keyboard-row {
-    text-align: center;
-    margin: 0 0 15px;
-}
-
-.virtual-keyboard-row-button {
-    padding: 10px 20px;
-    border-radius: 30px;
-    border: 3px solid #202C2B;
-    background: #13AB9E;
-    color: #fff;
-    text-transform: uppercase;
-
-}
-
-.delete,
-.submit {
-    text-transform: none;
-}
-
-.output {
-    margin: 15px;
-}
-
-.output-input {
-    color: white;
-    background: black;
-    border: 0px;
-    line-height: 2.2em;
-    text-align: center;
-    font-size: 2em;
-    width: 100%;
-    display: none;
+.diffudle-box {
+    height: 2vh;
+    width: 2vw;
+    font-size: 1.5vw;
+     
 }
 
 .diffudle-filled-box {
-    height: 36px;
-    width: 36px;
-    font-size: 24px;
-    border-radius: 5%;
     background: #2dd242;
 }
 
 .diffudle-space-box {
-    height: 36px;
-    width: 36px;
-    font-size: 24px;
-    border-radius: 5%;
     background: black;
 }
 
 .diffudle-empty-box {
-    height: 36px;
-    width: 36px;
-    font-size: 24px;
-    border-radius: 5%;
     background: #26ABDE;
 }
 
-.diffudle-box-content {
-    border: 1px solid green;
-    text-align: center;
+.bg-color {
+    background-color: #1b1c1d;
 }
+
+.border-1{
+    border: 0.1vw solid grey;
+    margin-left: 0.5vw;
+    margin-right: 0.5vw;
+    margin-bottom: 1.5vh;
+    margin-top: 1.5vh;
+    height: 8vh;
+    width: 8vw;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 4vh; 
+    font-size: 4vmin;
+}
+
+
+.virtual-keyboard-row {
+    text-align: center;
+    margin: 0 0 2px;
+}
+
+.virtual-keyboard-row-button {
+    border-radius: 2%;
+    margin-top: 0.5vmin !important;
+    margin-bottom: 0.5vmin !important;
+    padding-left: 2vmin !important;
+    padding-right: 2vmin !important;
+}
+

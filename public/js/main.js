@@ -5,7 +5,8 @@ var $keyboardWrapper = $('.virtual-keyboard'),
 	$outputField = $('.output input'),
 	actionKeys = $(".delete,.submit"),
 	$key_hint = $('.hint'),
-	$stats_button = $('#stats')
+	$stats_button = $('#stats'),
+	$howToPlay_button = $('#howToPlay')
 
 function post(path, params, method = 'post') {
 
@@ -33,7 +34,7 @@ function deleteEvent(e) {
 	var startingEmptyBoxes = document.getElementsByClassName('diffudle-empty-box');
 
 	for (var i = startingEmptyBoxes.length - 1; i >= 0; i--) {
-		if (startingEmptyBoxes[i].children.length > 0) {
+		if (startingEmptyBoxes[i].innerText != "") {
 			startingEmptyBoxes[i].innerHTML = "";
 			break;
 		}
@@ -47,13 +48,13 @@ function hintEvent(e) {
 
 function submitEvent(e) {
 	e.preventDefault();
-	var promptDivChildrens = document.getElementById('promptDiv').children;
+	var boxElements = document.querySelectorAll('[id ^= "box-"]');
 	var guessedPrompt = "";
-	for (var i = 0; i < promptDivChildrens.length; i++) {
-		if (promptDivChildrens[i].children[0].children[0] == null) {
+	for (var i = 0; i < boxElements.length; i++) {
+		if (boxElements[i].innerText == "") {
 			return;
 		}
-		guessedPrompt += promptDivChildrens[i].children[0].children[0].innerText;
+		guessedPrompt += boxElements[i].innerText;
 	}
 	console.log(guessedPrompt);
 
@@ -67,8 +68,8 @@ function fillPromptsEvent(e) {
 	var startingEmptyBoxes = document.getElementsByClassName('diffudle-empty-box');
 
 	for (var i = 0; i < startingEmptyBoxes.length; i++) {
-		if (startingEmptyBoxes[i].children.length == 0) {
-			startingEmptyBoxes[i].innerHTML += "<p class='diffudle-box-content'>" + keyValue + "</p>";
+		if (startingEmptyBoxes[i].innerText == "") {
+			startingEmptyBoxes[i].innerHTML = keyValue;
 			break;
 		}
 	}
@@ -84,6 +85,10 @@ const disableButton = () => {
 	$(".stats").modal('show');
 };
 
+const autoHowToPlayPop = () => {
+	$(".howToPlay").modal('show');
+}
+
 
 // Keyboard Support
 $(document).ready(function(){
@@ -91,7 +96,7 @@ $(document).ready(function(){
 		e.preventDefault();
 		var keyValue = String.fromCharCode(e.which);
 		if ((keyValue >= 'a' && keyValue <= 'z') || (keyValue >= 'A' && keyValue <= 'Z')){
-			var $keyQuery = $('.virtual-keyboard :input[value=' + keyValue.toLowerCase() + ']');
+			var $keyQuery = $('.virtual-keyboard :input[value=' + keyValue.toUpperCase() + ']');
 			$keyQuery.click();
 		} else if(e.which == 8){
 			$key_delete.click();
@@ -108,6 +113,16 @@ $key.not(actionKeys).on('click', fillPromptsEvent);
 
 
 // Popups
+
+$(function(){
+	$howToPlay_button.click(function(){
+		$(".howToPlay").modal('show');
+	});
+	$(".howToPlay").modal({
+		closable: true
+	});
+});
+
 
 $(function(){
 	$stats_button.click(function(){
