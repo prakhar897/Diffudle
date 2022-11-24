@@ -3,7 +3,7 @@ module.exports = {
 
         let played = 0;
         for (var attemptDate in attemptNumber){
-            if(attemptNumber[attemptDate] > 1)
+            if(attemptNumber[attemptDate] > 1 || success[attemptDate] == true)
                 played++;
         }
 
@@ -27,7 +27,10 @@ module.exports = {
             maxStreak = latestStreak;
         }
 
-        let winPercentage = Math.round((win*100)/played);
+        let winPercentage = 0;
+        if(played > 0)
+            winPercentage = Math.round((win*100)/played);
+            
         let summaryStats = {
             Played: played,
             WinPercentage: winPercentage,
