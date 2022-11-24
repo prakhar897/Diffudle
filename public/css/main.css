@@ -53,3 +53,7 @@ h1 {
     padding-right: 2vmin !important;
 }
 
+.adsbygoogle {
+    border: 1px solid red;
+  }
+
