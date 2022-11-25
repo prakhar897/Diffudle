@@ -35,7 +35,7 @@ module.exports = {
         var latestStreak = 0, maxStreak = 0;
         for (var attemptDate in success) {
             if (success[attemptDate] == true) {
-                winDistribution[attemptNumber[attemptDate]]++;
+                winDistribution[attemptNumber[attemptDate]-1]++;
                 totalWins++;
                 latestStreak++;
             } else if (latestStreak > maxStreak) {
