@@ -113,7 +113,6 @@ $key.not(actionKeys).on('click', fillPromptsEvent);
 
 
 // Popups
-
 $(function(){
 	$howToPlay_button.click(function(){
 		$(".howToPlay").modal('show');

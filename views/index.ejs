@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html>ymous"></script
 <html lang="en">
 
 <head>
@@ -16,6 +16,7 @@
 	<!-- Google Adsense -->
 	<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3026052060275359"
 	crossorigin="anonymous"></script>
+	
 
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -166,7 +167,7 @@
 			<div class="ui doubling four statistics">
 				<div class="statistic">
 					<div class="value">
-						<%=summaryStats.Played%>
+						<%=summaryStats.played%>
 					</div>
 					<div class="label">
 						Played
@@ -174,7 +175,7 @@
 				</div>
 				<div class="statistic">
 					<div class="value">
-						<%=summaryStats.WinPercentage%>%
+						<%=summaryStats.winPercentage%>%
 					</div>
 					<div class="label">
 						Win Percentage
@@ -197,6 +198,51 @@
 					</div>
 				</div>
 			</div>
+
+			<div class="ui hidden divider"></div>
+
+			<!-- Guess Distribution Histogram -->
+			<div class="ui container">
+				<h4 class="ui center aligned header">
+					Guess Distribution
+				</h4>
+
+				<div class="ui hidden divider"></div>
+
+				<div class="ui grid statHistogram">
+					<div class="ui white four wide right aligned column "> <h4 class="ui black header"> 1 </h4> </div>
+					<div class="ui black <%=summaryStats.winHistogramNames[0]%> wide right aligned column statHistogramColored"><%=summaryStats.winDistribution[0]%> </div>	
+				</div>
+
+				<div class="ui grid statHistogram">
+					<div class="ui white four wide right aligned column"> <h4 class="ui black header"> 2 </h4> </div>
+					<div class="ui black <%=summaryStats.winHistogramNames[1]%> wide right aligned column statHistogramColored"> <%=summaryStats.winDistribution[1]%></div>	
+				</div>
+
+				<div class="ui grid statHistogram">
+					<div class="ui white four wide right aligned column"> <h4 class="ui black header"> 3 </h4> </div>
+					<div class="ui black <%=summaryStats.winHistogramNames[2]%> wide right aligned column statHistogramColored"> <%=summaryStats.winDistribution[2]%></div>	
+				</div>
+
+				<div class="ui grid statHistogram">
+					<div class="ui white four wide right aligned column"> <h4 class="ui black header"> 4 </h4> </div>
+					<div class="ui black <%=summaryStats.winHistogramNames[3]%> wide right aligned column statHistogramColored"> <%=summaryStats.winDistribution[3]%> </div>	
+				</div>
+
+				<div class="ui grid statHistogram">
+					<div class="ui white four wide right aligned column"> <h4 class="ui black header"> 5 </h4> </div>
+					<div class="ui black <%=summaryStats.winHistogramNames[4]%> wide right aligned column statHistogramColored"> <%=summaryStats.winDistribution[4]%> </div>	
+				</div>
+
+				<div class="ui grid statHistogram">
+					<div class="ui white four wide right aligned column"> <h4 class="ui black header"> 6 </h4> </div>
+					<div class="ui black <%=summaryStats.winHistogramNames[5]%> wide right aligned column statHistogramColored"> <%=summaryStats.winDistribution[5]%> </div>	
+				</div>
+				
+			</div>
+			<!-- Guess Distribution Histogram END -->
+
+			<div class="ui hidden divider"></div>
 
 			<% if( success == true || attemptNumber >= 7) {%>
 				<div class="ui divider"></div>
