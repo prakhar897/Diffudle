@@ -1,7 +1,3 @@
-h1 {
-    color: #26ABDE;
-}
-
 .diffudle-box {
     height: 2vh;
     width: 2vw;
@@ -52,8 +48,3 @@ h1 {
     padding-left: 2vmin !important;
     padding-right: 2vmin !important;
 }
-
-.adsbygoogle {
-    border: 1px solid red;
-  }
-
