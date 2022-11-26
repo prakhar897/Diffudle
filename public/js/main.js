@@ -86,7 +86,8 @@ const disableButton = () => {
 };
 
 const autoHowToPlayPop = () => {
-	$howToPlay_button.click();
+	// This isn't working. Fix it later.
+	//$howToPlay_button.click();
 }
 
 
