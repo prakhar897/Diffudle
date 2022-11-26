@@ -86,7 +86,7 @@ const disableButton = () => {
 };
 
 const autoHowToPlayPop = () => {
-	$(".howToPlay").modal('show');
+	$howToPlay_button.click();
 }
 
 
