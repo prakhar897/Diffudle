@@ -5,8 +5,7 @@ var $keyboardWrapper = $('.virtual-keyboard'),
 	$outputField = $('.output input'),
 	actionKeys = $(".delete,.submit"),
 	$key_hint = $('.hint'),
-	$stats_button = $('#stats'),
-	$howToPlay_button = $('#howToPlay')
+	$stats_button = $('#stats')
 
 function post(path, params, method = 'post') {
 
@@ -85,11 +84,6 @@ const disableButton = () => {
 	$(".stats").modal('show');
 };
 
-const autoHowToPlayPop = () => {
-	// This isn't working. Fix it later.
-	//$howToPlay_button.click();
-}
-
 
 // Keyboard Support
 $(document).ready(function(){
@@ -114,15 +108,6 @@ $key.not(actionKeys).on('click', fillPromptsEvent);
 
 
 // Popups
-$(function(){
-	$howToPlay_button.click(function(){
-		$(".howToPlay").modal('show');
-	});
-	$(".howToPlay").modal({
-		closable: true
-	});
-});
-
 
 $(function(){
 	$stats_button.click(function(){
