@@ -3,6 +3,8 @@ var app = express();
 var bodyParser = require('body-parser');
 const path = require('path')
 var dotenv = require('dotenv');
+const cron = require("node-cron");
+
 var User = require('./models/user');
 var Question = require('./models/question');
 
@@ -152,6 +154,11 @@ app.post('/hint', async function( req , res) {
         console.log("ERROR body:" + error);
     }
 
+});
+
+// Creating a cron job which runs on every 10 second
+cron.schedule("*/10 * * * * *", function() {
+    console.log("running a task every 10 second");
 });
 
 

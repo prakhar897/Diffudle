@@ -74,7 +74,10 @@ module.exports = {
         var greenTile = "🟩";
         var blackTile = "⬛";
         var twitterDate = date.replace("-", "").replace("-", "");
-        console.log(attempts);
+        
+        if(attempts == '7'){
+            attempts = '6'
+        }
 
         var firstLine = "Diffudle%20" + date;
         var secondLine = "Attempts:%20" + attempts + "/6"; 
