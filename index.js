@@ -52,7 +52,7 @@ app.get('/', async function (req, res) {
         //console.log(question);
 
         const summaryStats = StatUtils.calculateSummaryStats(user.attemptNumber, user.success);
-        const twitterLink = StatUtils.shareTwitterLink(user.currentVisiblePositions, question.name, now);
+        const twitterLink = StatUtils.shareTwitterLink(user.currentVisiblePositions, question.name, now, user.attemptNumber[now]);
         res.render('index', {summaryStats: summaryStats, attemptNumber: user.attemptNumber[now],
             currentVisiblePosition: user.currentVisiblePositions, question: question, success: user.success[now],
             name: question.name, twitterLink: twitterLink, newUserFlag: newUserFlag });

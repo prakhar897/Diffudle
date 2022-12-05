@@ -69,12 +69,15 @@ module.exports = {
         return summaryStats;
     },
 
-    shareTwitterLink(currentVisiblePositions, name, date) {
+    shareTwitterLink(currentVisiblePositions, name, date, attempts) {
 
         var greenTile = "🟩";
         var blackTile = "⬛";
+        var twitterDate = date.replace("-", "").replace("-", "");
+        console.log(attempts);
 
-
+        var firstLine = "Diffudle%20" + date;
+        var secondLine = "Attempts:%20" + attempts + "/6"; 
         var result = "";
 
         for (var i = 0; i < name.length; i++) {
@@ -86,10 +89,11 @@ module.exports = {
                 result += blackTile;
             }
         }
+        
+        var fourthLine = "PlayHere:%20https://diffudle.com";
 
-        var twitterDate = date.replace("-", "").replace("-", "");
         var begin = "https://twitter.com/intent/tweet?";
-        var text = "text=" + result + "%0a%0a";
+        var text = "text=" + firstLine + "%0a" + secondLine + "%0a" + result + "%0a%0a" + fourthLine + "%0a%0a";
         var hashtags = "&hashtags=Diffudle,Diffudle_" + twitterDate;
         var twitterlink = begin + text + hashtags;
         return twitterlink;
