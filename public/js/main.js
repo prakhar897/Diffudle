@@ -74,16 +74,6 @@ function fillPromptsEvent(e) {
 	}
 }
 
-
-const disableButton = () => {
-	$key_delete.off('click', deleteEvent);
-	$key_hint.off('click', hintEvent);
-	$key_submit.off('click', submitEvent);
-	$key.not(actionKeys).off('click', fillPromptsEvent);
-
-	$(".stats").modal('show');
-};
-
 const setProgressBar = (gameSolvingPercentage) => {
 	$('#progressBar').progress({
 		percent: gameSolvingPercentage

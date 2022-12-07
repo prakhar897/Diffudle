@@ -107,13 +107,6 @@
 		<!-- Custom scripts for this template -->
 		<script src="js/main.js"></script>
 
-		<!-- After Scripts-->
-		<% if( success == true || attemptNumber >= 7) {%>
-			<script type="text/javascript">
-				disableButton();
-			</script>
-		<%}%>
-
 		<script type="text/javascript">
 			var gameSolvingPercentage = <%=gameSolvingPercentage%>;
 			setProgressBar(gameSolvingPercentage);
