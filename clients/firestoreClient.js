@@ -23,7 +23,6 @@ class FirestoreClient {
         const doc = await this.firestore.collection(collection).doc(docId).get();
         return doc.data();
     }
-
     
 }
 

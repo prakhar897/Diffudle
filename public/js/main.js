@@ -84,6 +84,12 @@ const disableButton = () => {
 	$(".stats").modal('show');
 };
 
+const setProgressBar = (gameSolvingPercentage) => {
+	$('#progressBar').progress({
+		percent: gameSolvingPercentage
+	});
+}
+
 
 // Keyboard Support
 $(document).ready(function(){

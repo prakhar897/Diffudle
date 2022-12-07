@@ -3,7 +3,6 @@ var app = express();
 var bodyParser = require('body-parser');
 const path = require('path')
 var dotenv = require('dotenv');
-const cron = require("node-cron");
 
 var User = require('./models/user');
 var Question = require('./models/question');
@@ -11,6 +10,8 @@ var Question = require('./models/question');
 const FirestoreClient = require('./clients/firestoreClient');
 const StatUtils = require('./utils/statUtils');
 const AppUtils = require('./utils/appUtils');
+const { getGameStats } = require("./utils/gameStatUtils");
+const GameStatUtils = require("./utils/gameStatUtils");
 
 
 dotenv.config({ path: path.resolve('../KeysManager/Diffudle/.env') });
@@ -24,9 +25,14 @@ app.set('trust proxy', true)
 
 app.get('/', async function (req, res) {
     try{
-
         let now = AppUtils.getCurrentDate();
-        let user = await FirestoreClient.getCollection('users', req.ip);
+        let [user, gameStats] = await Promise.all([
+            FirestoreClient.getCollection('users', req.ip),
+            GameStatUtils.getGameStats(now)
+        ]);
+
+        console.log(gameStats);
+        
         let newUserFlag = false;
 
         if (!user) {
@@ -51,13 +57,15 @@ app.get('/', async function (req, res) {
         console.log(questionRefId);
 
         const question = await FirestoreClient.getCollection('questions', questionRefId);
-        //console.log(question);
+        
 
         const summaryStats = StatUtils.calculateSummaryStats(user.attemptNumber, user.success);
         const twitterLink = StatUtils.shareTwitterLink(user.currentVisiblePositions, question.name, now, user.attemptNumber[now]);
+        const gameSolvingPercentage = GameStatUtils.calculateGameSolvingPercentage(gameStats);
+
         res.render('index', {summaryStats: summaryStats, attemptNumber: user.attemptNumber[now],
             currentVisiblePosition: user.currentVisiblePositions, question: question, success: user.success[now],
-            name: question.name, twitterLink: twitterLink, newUserFlag: newUserFlag });
+            name: question.name, twitterLink: twitterLink, newUserFlag: newUserFlag, gameSolvingPercentage: gameSolvingPercentage });
 
     } catch (error) {
         console.log("ERROR REQ:" + JSON.stringify(req.body));
@@ -91,6 +99,7 @@ app.post('/', async function (req, res) {
         }
 
         await FirestoreClient.save('users', req.ip, user);
+        GameStatUtils.updateGameStats(now, user.attemptNumber[now], user.success[now]);
         res.redirect("/");
 
     } catch (error) {
@@ -147,6 +156,8 @@ app.post('/hint', async function( req , res) {
         }
 
         await FirestoreClient.save('users', req.ip, user);
+        GameStatUtils.updateGameStats(now, user.attemptNumber[now], user.success[now]);
+
         res.redirect("/");
     } catch (error) {
         console.log("ERROR REQ:" + JSON.stringify(req.body));
@@ -155,14 +166,6 @@ app.post('/hint', async function( req , res) {
     }
 
 });
-
-// Creating a cron job which runs on every 10 second
-cron.schedule("*/10 * * * * *", function() {
-    console.log("running a task every 10 second");
-});
-
-
-
 
 app.listen(process.env.PORT, function (req, res) {
     console.log(`Listening on port ${process.env.PORT}`);

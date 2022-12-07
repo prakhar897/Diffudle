@@ -27,10 +27,10 @@
 	<title>Diffudle</title>
 
 	<!-- Semantic CDN -->
-	<link rel="stylesheet" type="text/css" href="semantic-ui/semantic.min.css">
-	<script src="https://code.jquery.com/jquery-3.1.1.min.js"
-		integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
-	<script src="semantic-ui/semantic.min.js"></script>
+	<!-- You MUST include jQuery before Fomantic -->
+	<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.0/dist/semantic.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.0/dist/semantic.min.js"></script>
 
 	<!-- CSS File -->
 	<link href="css/main.css" rel="stylesheet">
@@ -145,10 +145,23 @@
 		</div>
 	</div>
 
-	<!-- Bottom White Space-->
 	<div class="ui inverted segment">
 		<p></p>
 	</div>
+		
+
+	<div class="ui container">
+			<div class="ui inverted yellow progress" id="progressBar">
+				<div class="bar">
+					<div class="progress"></div>
+				</div>
+				<div class="label"> Players Solved This</div>
+			</div>
+	</div>
+
+	
+
+
 	<div class="ui inverted segment">
 		<p></p>
 	</div>
@@ -302,6 +315,11 @@
 			disableButton();
 		</script>
 	<%}%>
+
+	<script type="text/javascript">
+		var gameSolvingPercentage = <%=gameSolvingPercentage%>;
+		setProgressBar(gameSolvingPercentage);
+	</script>
 
 </body>
 
