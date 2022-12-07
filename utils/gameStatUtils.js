@@ -6,22 +6,22 @@ module.exports = {
         if(attemptNumber != 2 && success != true)
             return;
 
-        let currentStats = await FirestoreClient.getCollection('gameStats', date);
-        if(!currentStats)
-            currentStats = new GameStats(0,0);
+        let currentStats = await this.getGameStats(date);
         newStats = currentStats;
         
         if (attemptNumber == 2){
             newStats.players += 1;
-        } else if (success == true){
+        } 
+        
+        if (success == true){
             newStats.winners += 1
         }
         
         FirestoreClient.save('gameStats', date, newStats);
     },
 
-    getGameStats(date){
-        let currentStats = FirestoreClient.getCollection('gameStats', date);
+    async getGameStats(date){
+        let currentStats = await FirestoreClient.getCollection('gameStats', date);
         if(!currentStats)
             currentStats = new GameStats(0,0);
         return currentStats;

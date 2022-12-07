@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <%- include('partials/header.ejs') %>
+
+    <body class="ui inverted segment">
+
+
+        <%- include('components/navbar.ejs') %>
+
+        <h2 class="ui center aligned bold orange header">
+            THE QUOTE WAS: <%=name.toUpperCase()%>.
+        </h2>
+
+        <!-- SD generated pics -->
+        <div class="ui container">
+            <div class="ui three column grid">
+                <div class="row">
+                <div class="column">
+                    <img class="ui centered large rounded image" src="<%= question1.image %>">
+                </div>
+                <div class="column">
+                    <img class="ui centered large rounded image" src="<%= question2.image %>">
+                </div>
+                <div class="column">
+                    <img class="ui centered large rounded image" src="<%= question3.image %>">
+                </div>
+                </div>
+
+                <div class="row">
+                    <div class="column">
+                        <img class="ui centered large rounded image" src="<%= question4.image %>">
+                    </div>
+                    <div class="column">
+                        <img class="ui centered large rounded image" src="<%= question5.image %>">
+                    </div>
+                    <div class="column">
+                        <img class="ui centered large rounded image" src="<%= question6.image %>">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <%- include('components/promptText.ejs') %>
+
+        <div class="ui inverted segment">
+			<p></p>
+		</div>
+
+		<%- include('components/howToPlaySection.ejs') %>
+
+        <!-- Bottom White Space-->
+		<div class="ui inverted segment">
+			<p></p>
+		</div>
+		<div class="ui inverted segment">
+			<p></p>
+		</div>
+
+		<%- include('components/statsPopup.ejs') %>
+
+        <!-- Custom scripts for this template -->
+		<script src="js/main.js"></script>
+
+
+    </body>
+
+</html>

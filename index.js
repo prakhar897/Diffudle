@@ -54,18 +54,29 @@ app.get('/', async function (req, res) {
         }
 
         const questionRefId = now + "--" + user.attemptNumber[now];
-        console.log(questionRefId);
-
         const question = await FirestoreClient.getCollection('questions', questionRefId);
-        
 
         const summaryStats = StatUtils.calculateSummaryStats(user.attemptNumber, user.success);
         const twitterLink = StatUtils.shareTwitterLink(user.currentVisiblePositions, question.name, now, user.attemptNumber[now]);
         const gameSolvingPercentage = GameStatUtils.calculateGameSolvingPercentage(gameStats);
 
-        res.render('index', {summaryStats: summaryStats, attemptNumber: user.attemptNumber[now],
-            currentVisiblePosition: user.currentVisiblePositions, question: question, success: user.success[now],
-            name: question.name, twitterLink: twitterLink, newUserFlag: newUserFlag, gameSolvingPercentage: gameSolvingPercentage });
+        if(user.attemptNumber[now] == 7 || user.success[now] == true){
+            const question1 = await FirestoreClient.getCollection('questions', now + "--1");
+            const question2 = await FirestoreClient.getCollection('questions', now + "--2");
+            const question3 = await FirestoreClient.getCollection('questions', now + "--3");
+            const question4 = await FirestoreClient.getCollection('questions', now + "--4");
+            const question5 = await FirestoreClient.getCollection('questions', now + "--5");
+            const question6 = await FirestoreClient.getCollection('questions', now + "--6");
+
+            res.render('finished', {summaryStats: summaryStats, attemptNumber: user.attemptNumber[now],
+                currentVisiblePosition: user.currentVisiblePositions, question: question, success: user.success[now],
+                name: question.name, twitterLink: twitterLink, newUserFlag: newUserFlag, gameSolvingPercentage: gameSolvingPercentage,
+                question1: question1, question2: question2, question3: question3, question4: question4, question5: question5, question6: question6 });
+        }
+        else
+            res.render('index', {summaryStats: summaryStats, attemptNumber: user.attemptNumber[now],
+                currentVisiblePosition: user.currentVisiblePositions, question: question, success: user.success[now],
+                name: question.name, twitterLink: twitterLink, newUserFlag: newUserFlag, gameSolvingPercentage: gameSolvingPercentage });
 
     } catch (error) {
         console.log("ERROR REQ:" + JSON.stringify(req.body));

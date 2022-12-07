@@ -1,326 +1,124 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
+	<%- include('partials/header.ejs') %>
 
-	<!-- Google tag (gtag.js) -->
-	<script async src="https://www.googletagmanager.com/gtag/js?id=G-3E6M0ZLQNB"></script>
-	<script>
-	window.dataLayer = window.dataLayer || [];
-	function gtag(){dataLayer.push(arguments);}
-	gtag('js', new Date());
+	<body class="ui inverted segment">
 
-	gtag('config', 'G-3E6M0ZLQNB');
-	</script>
+		<%- include('components/navbar.ejs') %>
 
-	<!-- Google Adsense -->
-	<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3026052060275359"
-	crossorigin="anonymous"></script>
-	
+		<%- include('components/heading.ejs') %>
 
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<meta name="description" content="">
-	<meta name="author" content="">
-	<link rel="icon" href="img/logo.png">
-
-	<title>Diffudle</title>
-
-	<!-- Semantic CDN -->
-	<!-- You MUST include jQuery before Fomantic -->
-	<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.min.js"></script>
-	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.0/dist/semantic.min.css">
-	<script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.0/dist/semantic.min.js"></script>
-
-	<!-- CSS File -->
-	<link href="css/main.css" rel="stylesheet">
-
-	
-
-</head>
-
-<body class="ui inverted segment">
-
-	<!--Navigation-->
-	<nav class="ui inverted menu">
-		<a class="header black item" href="/">
-			Diffudle
-		</a>
-		<div class="right menu">
-			<a class="ui button yellow create_btn" href="https://ko-fi.com/prakhargupta" target="__blank"> 
-					DONATE &nbsp; <i class="heart icon"></i>
-			</a>
-			
-			<button class="ui button teal create_btn" type="button" id="stats">Stats</button>
+		<!-- SD generated pic -->
+		<div class="ui inverted segment">
+			<img class="ui centered large rounded image" src="<%= question.image %>">
 		</div>
-	</nav>
 
-	<!-- Heading -->
-	<div class="ui container">
-	<div class="ui inverted segment">
-		<h1 class="ui huge centered aligned white bold header">
-			WORDLE + STABLE DIFFUSION
-		</h1>
-	</div>
-	</div>
-
-	<!-- SD generated pic -->
-	<div class="ui inverted segment">
-		<img class="ui centered large rounded image" src="<%= question.image %>">
-	</div>
-
-	<!-- Attempts box -->
-	<div class="ui container">
-	<div class="ui inverted segment">	
-		<p class="ui center aligned huge teal header"> Attempt No : <%=attemptNumber%> / 6
-		</p>
-		<div class="ui center aligned container">
-			<button class="ui button yellow hint" type="button" >Hint</button>
-		</div>	
-	</div>
-	</div>
-
-	<!-- Prompt Text-->
-	<div class="ui container">
-		<div class="ui centered grid">
-			<% for (var i=0;i< question.name.length;i++){ %>
-				<% var boxId = "box-" + i%>
-				<% if(question.name[i]=="/" ){ %>
-					<div class="grey two wide mobile one wide tablet one wide computer column diffudle-space-box border-1" id=<%=boxId%>>
-						<%=question.name[i].toUpperCase()%>
-					</div>
-				<%} else if(currentVisiblePosition.includes(i)){%>
-					<div class="green two wide mobile one wide tablet one wide computer column diffudle-filled-box border-1" id=<%=boxId%>>
-						<%=question.name[i].toUpperCase()%>
-					</div>
-				<%} else {%>
-					<div class="bg-color two wide mobile one wide tablet one wide computer column diffudle-empty-box border-1" id=<%=boxId%>>
-					</div>
-				<%}%>
-			<% } %>
-		</div>
-	</div>
-
-	<!-- Style Text-->
-	<div class="ui inverted segment">
-		<p class="ui medium center aligned teal header"> STYLE: <%=question.style%>
-		</p>
-	</div>
-
-	<!-- Virtual Keyboard -->
-	<div class="ui container virtual-keyboard ">
-		<div class=" ui centered grid virtual-keyboard-row">
-			<input type="button" value="Q" class="ui button teal virtual-keyboard-row-button">
-			<input type="button" value="W" class="ui button teal virtual-keyboard-row-button">
-			<input type="button" value="E" class="ui button teal virtual-keyboard-row-button">
-			<input type="button" value="R" class="ui button teal virtual-keyboard-row-button">
-			<input type="button" value="T" class="ui button teal virtual-keyboard-row-button">
-			<input type="button" value="Y" class="ui button teal virtual-keyboard-row-button">
-			<input type="button" value="U" class="ui button teal virtual-keyboard-row-button">
-			<input type="button" value="I" class="ui button teal virtual-keyboard-row-button">
-			<input type="button" value="O" class="ui button teal virtual-keyboard-row-button">
-			<input type="button" value="P" class="ui button teal virtual-keyboard-row-button">
-		</div>
-		<div class="ui centered grid virtual-keyboard-row ">
-			<input type="button" value="A" class="ui button teal virtual-keyboard-row-button">
-			<input type="button" value="S" class="ui button teal virtual-keyboard-row-button">
-			<input type="button" value="D" class="ui button teal virtual-keyboard-row-button">
-			<input type="button" value="F" class="ui button teal virtual-keyboard-row-button">
-			<input type="button" value="G" class="ui button teal virtual-keyboard-row-button">
-			<input type="button" value="H" class="ui button teal virtual-keyboard-row-button">
-			<input type="button" value="J" class="ui button teal virtual-keyboard-row-button">
-			<input type="button" value="K" class="ui button teal virtual-keyboard-row-button">
-			<input type="button" value="L" class="ui button teal virtual-keyboard-row-button">
-		</div>
-		<div class="ui centered grid virtual-keyboard-row ">
-			<input type="button" value="DELETE" class="ui button teal virtual-keyboard-row-button delete">
-			<input type="button" value="Z" class="ui button teal virtual-keyboard-row-button">
-			<input type="button" value="X" class="ui button teal virtual-keyboard-row-button">
-			<input type="button" value="C" class="ui button teal virtual-keyboard-row-button">
-			<input type="button" value="V" class="ui button teal virtual-keyboard-row-button">
-			<input type="button" value="B" class="ui button teal virtual-keyboard-row-button">
-			<input type="button" value="N" class="ui button teal virtual-keyboard-row-button">
-			<input type="button" value="M" class="ui button teal virtual-keyboard-row-button">
-			<input type="button" value="SUBMIT" class="ui button teal virtual-keyboard-row-button submit">
-		</div>
-	</div>
-
-	<div class="ui inverted segment">
-		<p></p>
-	</div>
-		
-
-	<div class="ui container">
-			<div class="ui inverted yellow progress" id="progressBar">
-				<div class="bar">
-					<div class="progress"></div>
-				</div>
-				<div class="label"> Players Solved This</div>
-			</div>
-	</div>
-
-	
-
-
-	<div class="ui inverted segment">
-		<p></p>
-	</div>
-
-	<div class="ui  container">
-		<h2 class="ui inverted centered huge header">
-			How To Play
-		</h2>
-		<p class="ui inverted huge header">
-			1. You are given an AI generated image by the "hidden" prompt below. Try to guess the prompt from the image. <br>
-			2. If you fail, you'll be given a different image generated by the same prompt.<br>
-			3. MEANINGLESS WORDS ARE VALID INPUTS <br>
-			4. New line does not mean a space. "/" means space. <br>
-			5. HINT reveals "x" amounts of letters but consumes one attempt. <br>
-		</p>
-		<div class="ui divider"></div>
-
-		<p class="ui inverted centered medium header">
-			A new puzzle is released every midnight. <br>
-			Have Feedback? Email us at feedback@diffudle.com <br>
-		</p>
-		<div class="ui divider"> </div>
-	</div>
-
-	<!-- Bottom White Space-->
-	<div class="ui inverted segment">
-		<p></p>
-	</div>
-	<div class="ui inverted segment">
-		<p></p>
-	</div>
-
-	<!-- Stats Popup -->
-	<div class="ui modal stats">
-		<i class="close icon"></i>
-		<div class="content">
-			<% if(attemptNumber < 7 && success == true) {%>
-			<h2 class="ui center aligned bold orange header">
-				CONGRATULATIONS!! YOU WIN
-			</h2>
-			<%} else if (attemptNumber >= 7){ %>		
-			<h2 class="ui center aligned bold orange header">
-				THE QUOTE WAS: <%=name.toUpperCase()%>.
-			</h2>	
-			<%}%>
-
-			<h4 class="ui center aligned header">
-				Statistics
-			</h4>
-			<div class="ui doubling four statistics">
-				<div class="statistic">
-					<div class="value">
-						<%=summaryStats.played%>
-					</div>
-					<div class="label">
-						Played
-					</div>
-				</div>
-				<div class="statistic">
-					<div class="value">
-						<%=summaryStats.winPercentage%>%
-					</div>
-					<div class="label">
-						Win Percentage
-					</div>
-				</div>
-				<div class="statistic">
-					<div class="value">
-						<%=summaryStats.latestStreak%>
-					</div>
-					<div class="label">
-						Latest Streak
-					</div>
-				</div>
-				<div class="statistic">
-					<div class="value">
-						<%=summaryStats.maxStreak%>
-					</div>
-					<div class="label">
-						Max Streak
-					</div>
-				</div>
-			</div>
-
-			<div class="ui hidden divider"></div>
-
-			<!-- Guess Distribution Histogram -->
-			<div class="ui container">
-				<h4 class="ui center aligned header">
-					Guess Distribution
-				</h4>
-
-				<div class="ui hidden divider"></div>
-
-				<div class="ui grid statHistogram">
-					<div class="ui white four wide right aligned column "> <h4 class="ui black header"> 1 </h4> </div>
-					<div class="ui black <%=summaryStats.winHistogramNames[0]%> wide right aligned column statHistogramColored"><%=summaryStats.winDistribution[0]%> </div>	
-				</div>
-
-				<div class="ui grid statHistogram">
-					<div class="ui white four wide right aligned column"> <h4 class="ui black header"> 2 </h4> </div>
-					<div class="ui black <%=summaryStats.winHistogramNames[1]%> wide right aligned column statHistogramColored"> <%=summaryStats.winDistribution[1]%></div>	
-				</div>
-
-				<div class="ui grid statHistogram">
-					<div class="ui white four wide right aligned column"> <h4 class="ui black header"> 3 </h4> </div>
-					<div class="ui black <%=summaryStats.winHistogramNames[2]%> wide right aligned column statHistogramColored"> <%=summaryStats.winDistribution[2]%></div>	
-				</div>
-
-				<div class="ui grid statHistogram">
-					<div class="ui white four wide right aligned column"> <h4 class="ui black header"> 4 </h4> </div>
-					<div class="ui black <%=summaryStats.winHistogramNames[3]%> wide right aligned column statHistogramColored"> <%=summaryStats.winDistribution[3]%> </div>	
-				</div>
-
-				<div class="ui grid statHistogram">
-					<div class="ui white four wide right aligned column"> <h4 class="ui black header"> 5 </h4> </div>
-					<div class="ui black <%=summaryStats.winHistogramNames[4]%> wide right aligned column statHistogramColored"> <%=summaryStats.winDistribution[4]%> </div>	
-				</div>
-
-				<div class="ui grid statHistogram">
-					<div class="ui white four wide right aligned column"> <h4 class="ui black header"> 6 </h4> </div>
-					<div class="ui black <%=summaryStats.winHistogramNames[5]%> wide right aligned column statHistogramColored"> <%=summaryStats.winDistribution[5]%> </div>	
-				</div>
-				
-			</div>
-			<!-- Guess Distribution Histogram END -->
-
-			<div class="ui hidden divider"></div>
-
-			<% if( success == true || attemptNumber >= 7) {%>
-				<div class="ui divider"></div>
-
+		<!-- Attempts box -->
+		<div class="ui container">
+			<div class="ui inverted segment">	
+				<p class="ui center aligned huge teal header"> Attempt No : <%=attemptNumber%> / 6
+				</p>
 				<div class="ui center aligned container">
-					<a class="ui twitter button" target="_blank" href= <%=twitterLink%>>
-						<i class="twitter icon"></i>
-						Share on Twitter
-					</a>
-				</div>
-			<%}%>
-			
+					<button class="ui button yellow hint" type="button" >Hint</button>
+				</div>	
+			</div>
 		</div>
+
+		<%- include('components/promptText.ejs') %>
+
+		<!-- Style Text-->
+		<div class="ui inverted segment">
+			<p class="ui medium center aligned teal header"> STYLE: <%=question.style%>
+			</p>
+		</div>
+
+		<!-- Virtual Keyboard -->
+		<div class="ui container virtual-keyboard ">
+			<div class=" ui centered grid virtual-keyboard-row">
+				<input type="button" value="Q" class="ui button teal virtual-keyboard-row-button">
+				<input type="button" value="W" class="ui button teal virtual-keyboard-row-button">
+				<input type="button" value="E" class="ui button teal virtual-keyboard-row-button">
+				<input type="button" value="R" class="ui button teal virtual-keyboard-row-button">
+				<input type="button" value="T" class="ui button teal virtual-keyboard-row-button">
+				<input type="button" value="Y" class="ui button teal virtual-keyboard-row-button">
+				<input type="button" value="U" class="ui button teal virtual-keyboard-row-button">
+				<input type="button" value="I" class="ui button teal virtual-keyboard-row-button">
+				<input type="button" value="O" class="ui button teal virtual-keyboard-row-button">
+				<input type="button" value="P" class="ui button teal virtual-keyboard-row-button">
+			</div>
+			<div class="ui centered grid virtual-keyboard-row ">
+				<input type="button" value="A" class="ui button teal virtual-keyboard-row-button">
+				<input type="button" value="S" class="ui button teal virtual-keyboard-row-button">
+				<input type="button" value="D" class="ui button teal virtual-keyboard-row-button">
+				<input type="button" value="F" class="ui button teal virtual-keyboard-row-button">
+				<input type="button" value="G" class="ui button teal virtual-keyboard-row-button">
+				<input type="button" value="H" class="ui button teal virtual-keyboard-row-button">
+				<input type="button" value="J" class="ui button teal virtual-keyboard-row-button">
+				<input type="button" value="K" class="ui button teal virtual-keyboard-row-button">
+				<input type="button" value="L" class="ui button teal virtual-keyboard-row-button">
+			</div>
+			<div class="ui centered grid virtual-keyboard-row ">
+				<input type="button" value="DELETE" class="ui button teal virtual-keyboard-row-button delete">
+				<input type="button" value="Z" class="ui button teal virtual-keyboard-row-button">
+				<input type="button" value="X" class="ui button teal virtual-keyboard-row-button">
+				<input type="button" value="C" class="ui button teal virtual-keyboard-row-button">
+				<input type="button" value="V" class="ui button teal virtual-keyboard-row-button">
+				<input type="button" value="B" class="ui button teal virtual-keyboard-row-button">
+				<input type="button" value="N" class="ui button teal virtual-keyboard-row-button">
+				<input type="button" value="M" class="ui button teal virtual-keyboard-row-button">
+				<input type="button" value="SUBMIT" class="ui button teal virtual-keyboard-row-button submit">
+			</div>
+		</div>
+
+		<div class="ui inverted segment">
+			<p></p>
+		</div>
+			
+
+		<div class="ui container">
+				<div class="ui inverted yellow progress" id="progressBar">
+					<div class="bar">
+						<div class="progress"></div>
+					</div>
+					<div class="label"> Players Solved This Challenge</div>
+				</div>
+		</div>
+
 		
-	</div>
 
-	<!-- Custom scripts for this template -->
-	<script src="js/main.js"></script>
 
-	<!-- After Scripts-->
-	<% if( success == true || attemptNumber >= 7) {%>
+		<div class="ui inverted segment">
+			<p></p>
+		</div>
+
+		<%- include('components/howToPlaySection.ejs') %>
+
+		<!-- Bottom White Space-->
+		<div class="ui inverted segment">
+			<p></p>
+		</div>
+		<div class="ui inverted segment">
+			<p></p>
+		</div>
+
+		<%- include('components/statsPopup.ejs') %>
+
+		<!-- Custom scripts for this template -->
+		<script src="js/main.js"></script>
+
+		<!-- After Scripts-->
+		<% if( success == true || attemptNumber >= 7) {%>
+			<script type="text/javascript">
+				disableButton();
+			</script>
+		<%}%>
+
 		<script type="text/javascript">
-			disableButton();
+			var gameSolvingPercentage = <%=gameSolvingPercentage%>;
+			setProgressBar(gameSolvingPercentage);
 		</script>
-	<%}%>
 
-	<script type="text/javascript">
-		var gameSolvingPercentage = <%=gameSolvingPercentage%>;
-		setProgressBar(gameSolvingPercentage);
-	</script>
-
-</body>
+	</body>
 
 </html>

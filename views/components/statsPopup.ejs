@@ -1,0 +1,102 @@
+<!-- Stats Popup -->
+<div class="ui modal stats">
+    <i class="close icon"></i>
+    <div class="content">
+
+        <h4 class="ui center aligned header">
+            Statistics
+        </h4>
+        <div class="ui doubling four statistics">
+            <div class="statistic">
+                <div class="value">
+                    <%=summaryStats.played%>
+                </div>
+                <div class="label">
+                    Played
+                </div>
+            </div>
+            <div class="statistic">
+                <div class="value">
+                    <%=summaryStats.winPercentage%>%
+                </div>
+                <div class="label">
+                    Win Percentage
+                </div>
+            </div>
+            <div class="statistic">
+                <div class="value">
+                    <%=summaryStats.latestStreak%>
+                </div>
+                <div class="label">
+                    Latest Streak
+                </div>
+            </div>
+            <div class="statistic">
+                <div class="value">
+                    <%=summaryStats.maxStreak%>
+                </div>
+                <div class="label">
+                    Max Streak
+                </div>
+            </div>
+        </div>
+
+        <div class="ui hidden divider"></div>
+
+        <!-- Guess Distribution Histogram -->
+        <div class="ui container">
+            <h4 class="ui center aligned header">
+                Guess Distribution
+            </h4>
+
+            <div class="ui hidden divider"></div>
+
+            <div class="ui grid statHistogram">
+                <div class="ui white four wide right aligned column "> <h4 class="ui black header"> 1 </h4> </div>
+                <div class="ui black <%=summaryStats.winHistogramNames[0]%> wide right aligned column statHistogramColored"><%=summaryStats.winDistribution[0]%> </div>	
+            </div>
+
+            <div class="ui grid statHistogram">
+                <div class="ui white four wide right aligned column"> <h4 class="ui black header"> 2 </h4> </div>
+                <div class="ui black <%=summaryStats.winHistogramNames[1]%> wide right aligned column statHistogramColored"> <%=summaryStats.winDistribution[1]%></div>	
+            </div>
+
+            <div class="ui grid statHistogram">
+                <div class="ui white four wide right aligned column"> <h4 class="ui black header"> 3 </h4> </div>
+                <div class="ui black <%=summaryStats.winHistogramNames[2]%> wide right aligned column statHistogramColored"> <%=summaryStats.winDistribution[2]%></div>	
+            </div>
+
+            <div class="ui grid statHistogram">
+                <div class="ui white four wide right aligned column"> <h4 class="ui black header"> 4 </h4> </div>
+                <div class="ui black <%=summaryStats.winHistogramNames[3]%> wide right aligned column statHistogramColored"> <%=summaryStats.winDistribution[3]%> </div>	
+            </div>
+
+            <div class="ui grid statHistogram">
+                <div class="ui white four wide right aligned column"> <h4 class="ui black header"> 5 </h4> </div>
+                <div class="ui black <%=summaryStats.winHistogramNames[4]%> wide right aligned column statHistogramColored"> <%=summaryStats.winDistribution[4]%> </div>	
+            </div>
+
+            <div class="ui grid statHistogram">
+                <div class="ui white four wide right aligned column"> <h4 class="ui black header"> 6 </h4> </div>
+                <div class="ui black <%=summaryStats.winHistogramNames[5]%> wide right aligned column statHistogramColored"> <%=summaryStats.winDistribution[5]%> </div>	
+            </div>
+            
+        </div>
+        <!-- Guess Distribution Histogram END -->
+
+        <div class="ui hidden divider"></div>
+
+        <% if( success == true || attemptNumber >= 7) {%>
+            <div class="ui divider"></div>
+
+            <div class="ui center aligned container">
+                <a class="ui twitter button" target="_blank" href= <%=twitterLink%>>
+                    <i class="twitter icon"></i>
+                    Share on Twitter
+                </a>
+            </div>
+        <%}%>
+        
+    </div>
+    
+</div>

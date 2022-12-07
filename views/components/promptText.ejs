@@ -1,0 +1,20 @@
+<!-- Prompt Text-->
+<div class="ui container">
+    <div class="ui centered grid">
+        <% for (var i=0;i< question.name.length;i++){ %>
+            <% var boxId = "box-" + i%>
+            <% if(question.name[i]=="/" ){ %>
+                <div class="grey two wide mobile one wide tablet one wide computer column diffudle-space-box border-1" id=<%=boxId%>>
+                    <%=question.name[i].toUpperCase()%>
+                </div>
+            <%} else if(currentVisiblePosition.includes(i)){%>
+                <div class="green two wide mobile one wide tablet one wide computer column diffudle-filled-box border-1" id=<%=boxId%>>
+                    <%=question.name[i].toUpperCase()%>
+                </div>
+            <%} else {%>
+                <div class="bg-color two wide mobile one wide tablet one wide computer column diffudle-empty-box border-1" id=<%=boxId%>>
+                </div>
+            <%}%>
+        <% } %>
+    </div>
+</div>
