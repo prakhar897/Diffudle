@@ -17,13 +17,13 @@
             <div class="ui three column grid">
                 <div class="row">
                 <div class="column">
-                    <img class="ui centered large rounded image" src="<%= question1.image %>">
+                    <img class="ui centered large rounded image" src="<%= question1.image %>"  width="128" height="128">
                 </div>
                 <div class="column">
-                    <img class="ui centered large rounded image" src="<%= question2.image %>">
+                    <img class="ui centered large rounded image"  src="<%= question2.image %>"  width="128" height="128">
                 </div>
                 <div class="column">
-                    <img class="ui centered large rounded image" src="<%= question3.image %>">
+                    <img class="ui centered large rounded image" src="<%= question3.image %>"  width="128" height="128">
                 </div>
                 </div>
 
@@ -53,9 +53,8 @@
 		<div class="ui inverted segment">
 			<p></p>
 		</div>
-		<div class="ui inverted segment">
-			<p></p>
-		</div>
+
+		<%- include('partials/footer.ejs') %>
 
 		<%- include('components/statsPopup.ejs') %>
 
