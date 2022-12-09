@@ -1,9 +1,7 @@
 class Question {
 
-    constructor(name, style, image, attemptNumber, date) {
+    constructor(name, style, image) {
         this.name = name || null;
-        this.attemptNumber = attemptNumber || null;
-        this.date = date || null;
         this.style = style || null;
         this.image = image || null;
     }

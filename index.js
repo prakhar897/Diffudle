@@ -10,128 +10,133 @@ var Question = require('./models/question');
 const FirestoreClient = require('./clients/firestoreClient');
 const StatUtils = require('./utils/statUtils');
 const AppUtils = require('./utils/appUtils');
-const { getGameStats } = require("./utils/gameStatUtils");
 const GameStatUtils = require("./utils/gameStatUtils");
-
 
 dotenv.config({ path: path.resolve('../KeysManager/Diffudle/.env') });
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json())
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
-app.set('trust proxy', true)
 
+//TODO: Remove after moving to cookies
+app.set('trust proxy', true)
 
 
 app.get('/', async function (req, res) {
     try{
-        let now = AppUtils.getCurrentDate();
+        
+        let formattedDate = req.query.date || AppUtils.convertDateFormat(new Date());
         let [user, gameStats] = await Promise.all([
             FirestoreClient.getCollection('users', req.ip),
-            GameStatUtils.getGameStats(now)
+            GameStatUtils.getGameStats(formattedDate)
         ]);
 
-        console.log(gameStats);
-        
-        let newUserFlag = false;
+        console.log(req.query.date);
 
         if (!user) {
-            newUserFlag = true;
-            let newUser = new User(req.ip, {},{}, [],{});
-            newUser.attemptNumber[now] = 1;
-            newUser.success[now] = false;
-            newUser.guessHistory[now] = [];
+            let newUser = new User({}, {}, {});
+            newUser.attemptNumberDateMap[formattedDate] = 1;
+            newUser.successDateMap[formattedDate] = false;
+            newUser.visiblePositionsDateMap[formattedDate] = [];
             await FirestoreClient.save('users',req.ip, newUser);
             user = newUser;
         }
 
-        if (user.attemptNumber[now] == null) {
-            user.attemptNumber[now] = 1;
-            user.success[now] = false;
-            user.currentVisiblePositions = [];
-            user.guessHistory[now] = [];
+        if (user.attemptNumberDateMap[formattedDate] == null) {
+            user.attemptNumberDateMap[formattedDate] = 1;
+            user.successDateMap[formattedDate] = false;
+            user.visiblePositionsDateMap[formattedDate] = [];
             await FirestoreClient.save('users', req.ip, user);
         }
 
-        const questionRefId = now + "--" + user.attemptNumber[now];
+        const questionRefId = formattedDate + "--" + user.attemptNumberDateMap[formattedDate];
         const question = await FirestoreClient.getCollection('questions', questionRefId);
 
-        const summaryStats = StatUtils.calculateSummaryStats(user.attemptNumber, user.success);
-        const twitterLink = StatUtils.shareTwitterLink(user.currentVisiblePositions, question.name, now, user.attemptNumber[now]);
+        const summaryStats = StatUtils.calculateSummaryStats(user.attemptNumberDateMap, user.successDateMap);
+        const twitterLink = StatUtils.shareTwitterLink(user.visiblePositionsDateMap[formattedDate], question.name, formattedDate, user.attemptNumberDateMap[formattedDate]);
         const gameSolvingPercentage = GameStatUtils.calculateGameSolvingPercentage(gameStats);
 
-        if(user.attemptNumber[now] == 7 || user.success[now] == true){
-            const question1 = await FirestoreClient.getCollection('questions', now + "--1");
-            const question2 = await FirestoreClient.getCollection('questions', now + "--2");
-            const question3 = await FirestoreClient.getCollection('questions', now + "--3");
-            const question4 = await FirestoreClient.getCollection('questions', now + "--4");
-            const question5 = await FirestoreClient.getCollection('questions', now + "--5");
-            const question6 = await FirestoreClient.getCollection('questions', now + "--6");
+        if(user.attemptNumberDateMap[formattedDate] == 7 || user.successDateMap[formattedDate] == true){
+            let [question1, question2, question3, question4, question5, question6] = await Promise.all([
+                FirestoreClient.getCollection('questions', formattedDate + "--1"),
+                FirestoreClient.getCollection('questions', formattedDate + "--2"),
+                FirestoreClient.getCollection('questions', formattedDate + "--3"),
+                FirestoreClient.getCollection('questions', formattedDate + "--4"),
+                FirestoreClient.getCollection('questions', formattedDate + "--5"),
+                FirestoreClient.getCollection('questions', formattedDate + "--6")
+            ]);
+            
 
-            res.render('finished', {summaryStats: summaryStats, attemptNumber: user.attemptNumber[now],
-                currentVisiblePosition: user.currentVisiblePositions, question: question, success: user.success[now],
-                name: question.name, twitterLink: twitterLink, newUserFlag: newUserFlag, gameSolvingPercentage: gameSolvingPercentage,
+            res.render('finished', {summaryStats: summaryStats, attemptNumber: user.attemptNumberDateMap[formattedDate],
+                currentVisiblePositions: user.visiblePositionsDateMap[formattedDate], question: question, success: user.successDateMap[formattedDate],
+                name: question.name, twitterLink: twitterLink, gameSolvingPercentage: gameSolvingPercentage,
                 question1: question1, question2: question2, question3: question3, question4: question4, question5: question5, question6: question6 });
         }
         else
-            res.render('index', {summaryStats: summaryStats, attemptNumber: user.attemptNumber[now],
-                currentVisiblePosition: user.currentVisiblePositions, question: question, success: user.success[now],
-                name: question.name, twitterLink: twitterLink, newUserFlag: newUserFlag, gameSolvingPercentage: gameSolvingPercentage });
+            res.render('index', {summaryStats: summaryStats, attemptNumber: user.attemptNumberDateMap[formattedDate],
+                currentVisiblePositions: user.visiblePositionsDateMap[formattedDate], question: question, success: user.successDateMap[formattedDate],
+                name: question.name, twitterLink: twitterLink, gameSolvingPercentage: gameSolvingPercentage });
 
     } catch (error) {
+        let formattedDate = req.query.date || AppUtils.convertDateFormat(new Date());
+        console.log("ERROR DATE:" + formattedDate);
         console.log("ERROR REQ:" + JSON.stringify(req.body));
         console.log("ERROR IP:" + JSON.stringify(req.ip));
         console.log("ERROR body:" + error);
+        console.log("ERROR STACK TRACE: " + error.stack);
     }
 });
 
 app.post('/', async function (req, res) {
     try{
-        let now = AppUtils.getCurrentDate();
+        let formattedDate = req.query.date || AppUtils.convertDateFormat(new Date());
+        console.log("AAAA" + req.query.date);
         const user = await FirestoreClient.getCollection('users', req.ip);
-        const questionRefId = now + "--" + user.attemptNumber[now];
+        const questionRefId = formattedDate + "--" + user.attemptNumberDateMap[formattedDate];
         const question = await FirestoreClient.getCollection('questions', questionRefId);
         const guessedPrompt = req.body.guessedPrompt;
 
         let newVisiblePositions = [];
         for (var i = 0; i < question.name.length; i++) {
-            if (user.currentVisiblePositions.includes(i) || question.name.toUpperCase()[i] == guessedPrompt[i]) {
+            if (user.visiblePositionsDateMap[formattedDate].includes(i) || question.name.toUpperCase()[i] == guessedPrompt.toUpperCase()[i]) {
                 newVisiblePositions.push(i);
             }
         }
 
-        user.currentVisiblePositions = newVisiblePositions;
-        user.guessHistory[now].push(guessedPrompt);
+        user.visiblePositionsDateMap[formattedDate] = newVisiblePositions;
         
         if (newVisiblePositions.length == question.name.length) {
-            user.success[now] =  true;
+            user.successDateMap[formattedDate] =  true;
         } else {
-            user.attemptNumber[now]++;
+            user.attemptNumberDateMap[formattedDate]++;
         }
 
         await FirestoreClient.save('users', req.ip, user);
-        GameStatUtils.updateGameStats(now, user.attemptNumber[now], user.success[now]);
-        res.redirect("/");
+        GameStatUtils.updateGameStats(formattedDate, user.attemptNumberDateMap[formattedDate], user.successDateMap[formattedDate]);
+        res.redirect("/?date="+formattedDate);
 
     } catch (error) {
+        let formattedDate = req.query.date || AppUtils.convertDateFormat(new Date());
+        console.log("ERROR DATE:" + formattedDate);
         console.log("ERROR REQ:" + JSON.stringify(req.body));
         console.log("ERROR IP:" + JSON.stringify(req.ip));
         console.log("ERROR body:" + error);
+        console.log("ERROR STACK TRACE: " + error.stack);
     }
 
 });
 
 app.post('/hint', async function( req , res) {
     try{
-        let now = AppUtils.getCurrentDate();
+        let formattedDate = req.query.date || AppUtils.convertDateFormat(new Date());
         const user = await FirestoreClient.getCollection('users', req.ip);
-        const questionRefId = now + "--" + user.attemptNumber[now];
+        const questionRefId = formattedDate + "--" + user.attemptNumberDateMap[formattedDate];
         const question = await FirestoreClient.getCollection('questions', questionRefId);
 
 
         const canBeReveleadPostions = [];
         for(var i=0; i< question.name.length;i++){
-            if(!user.currentVisiblePositions.includes(i) && question.name[i] != "/"){
+            if(!user.visiblePositionsDateMap[formattedDate].includes(i) && question.name[i] != "/"){
                 canBeReveleadPostions.push(i);
             }
         }
@@ -152,30 +157,42 @@ app.post('/hint', async function( req , res) {
 
         let newVisiblePositions = [];
         for (var i = 0; i < question.name.length; i++) {
-            if (user.currentVisiblePositions.includes(i) || question.name[i] == guessedPrompt[i]) {
+            if (user.visiblePositionsDateMap[formattedDate].includes(i) || question.name.toUpperCase()[i] == guessedPrompt.toUpperCase()[i]) {
                 newVisiblePositions.push(i);
             }
         }
 
-        user.currentVisiblePositions = newVisiblePositions;
-        user.guessHistory[now].push("HINT");
+        user.visiblePositionsDateMap[formattedDate] = newVisiblePositions;
         
         if (newVisiblePositions.length == question.name.length) {
-            user.success[now] =  true;
+            user.successDateMap[formattedDate] =  true;
         } else {
-            user.attemptNumber[now]++;
+            user.attemptNumberDateMap[formattedDate]++;
         }
 
         await FirestoreClient.save('users', req.ip, user);
-        GameStatUtils.updateGameStats(now, user.attemptNumber[now], user.success[now]);
+        GameStatUtils.updateGameStats(formattedDate, user.attemptNumberDateMap[formattedDate], user.successDateMap[formattedDate]);
 
-        res.redirect("/");
+        res.redirect("/?date="+formattedDate);
     } catch (error) {
+        let formattedDate = req.query.date || AppUtils.convertDateFormat(new Date());
+        console.log("ERROR DATE:" + formattedDate);
         console.log("ERROR REQ:" + JSON.stringify(req.body));
         console.log("ERROR IP:" + JSON.stringify(req.ip));
         console.log("ERROR body:" + error);
+        console.log("ERROR STACK TRACE: " + error.stack);
     }
 
+});
+
+app.get("/archive",async function( req , res) {
+    let user = await FirestoreClient.getCollection('users', req.ip);    
+    const summaryStats = StatUtils.calculateSummaryStats(user.attemptNumberDateMap, user.successDateMap);
+    res.render('archiveCalender',{summaryStats: summaryStats, success: false, attemptNumber: 1});
+});
+
+app.post("/archive",async function( req , res) {
+    res.redirect("/?date="+req.query.date);
 });
 
 app.listen(process.env.PORT, function (req, res) {

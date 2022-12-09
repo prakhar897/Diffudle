@@ -1,5 +1,5 @@
 module.exports = {
-    getCurrentDate() {
-        return new Date().toISOString().split('T')[0];
+    convertDateFormat(date) {
+        return date.toISOString().split('T')[0];
     }
 };

@@ -22,20 +22,20 @@ function convertWinHistogramToSemanticNames(winHistogram) {
 }
 
 module.exports = {
-    calculateSummaryStats(attemptNumber, success) {
+    calculateSummaryStats(attemptNumberDateMap, successDateMap) {
 
         let played = 0;
-        for (var attemptDate in attemptNumber) {
-            if (attemptNumber[attemptDate] > 1 || success[attemptDate] == true)
+        for (var attemptDate in attemptNumberDateMap) {
+            if (attemptNumberDateMap[attemptDate] > 1 || successDateMap[attemptDate] == true)
                 played++;
         }
 
         let totalWins = 0;
         let winDistribution = [0, 0, 0, 0, 0, 0];
         var latestStreak = 0, maxStreak = 0;
-        for (var attemptDate in success) {
-            if (success[attemptDate] == true) {
-                winDistribution[attemptNumber[attemptDate]-1]++;
+        for (var attemptDate in successDateMap) {
+            if (successDateMap[attemptDate] == true) {
+                winDistribution[attemptNumberDateMap[attemptDate]-1]++;
                 totalWins++;
                 latestStreak++;
             } else if (latestStreak > maxStreak) {

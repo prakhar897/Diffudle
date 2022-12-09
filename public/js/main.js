@@ -7,8 +7,18 @@ var $keyboardWrapper = $('.virtual-keyboard'),
 	$key_hint = $('.hint'),
 	$stats_button = $('#stats')
 
-function post(path, params, method = 'post') {
+function getQueryParams(){
+	const queryParamsString = window.location.search.substr(1);
+	return queryParamsString
+	.split('&')
+	.reduce((accumulator, singleQueryParam) => {
+		const [key, value] = singleQueryParam.split('=');
+		accumulator[key] = value;
+		return accumulator;
+	}, {});
+}
 
+function post(path, params, method) {
 	const form = document.createElement('form');
 	form.method = method;
 	form.action = path;
@@ -42,11 +52,13 @@ function deleteEvent(e) {
 
 function hintEvent(e) {
 	e.preventDefault();
-	post("/hint", {});
+	const queryParams = getQueryParams();
+	post("/hint?date="+queryParams.date, {}, 'post');
 }
 
 function submitEvent(e) {
 	e.preventDefault();
+	const queryParams = getQueryParams();
 	var boxElements = document.querySelectorAll('[id ^= "box-"]');
 	var guessedPrompt = "";
 	for (var i = 0; i < boxElements.length; i++) {
@@ -57,7 +69,7 @@ function submitEvent(e) {
 	}
 	console.log(guessedPrompt);
 
-	post('/', { 'guessedPrompt': guessedPrompt });
+	post('/?date='+queryParams.date, { 'guessedPrompt': guessedPrompt }, 'post');
 };
 
 function fillPromptsEvent(e) {
@@ -113,6 +125,21 @@ $(function(){
 		closable: true
 	});
 });
+
+var startDate = new Date("2022-11-22");
+var endDate = new Date();
+$('#date_calendar')
+  .calendar({
+    type: 'date',
+	minDate: startDate,
+	maxDate: endDate,
+	onChange: function (date, text) {
+		//Month is 0 indexed. JS is fking stupid. Also leading zero's need to added in date and month.
+		var dateISO = date.getFullYear() + "-" + ("0"+(date.getMonth()+1)).slice(-2) +"-"+("0" + date.getDate()).slice(-2);
+		post('/archive?date='+dateISO, {}, 'post');
+	   },
+  })
+;
 
 
 

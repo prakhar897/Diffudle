@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('partials/header.ejs') %>
+
+    <body class="ui center aligned inverted segment">
+        <%- include('components/navbar.ejs') %> 
+		<%- include('components/heading.ejs') %>
+
+		<!-- Bottom White Space-->
+        <div class="ui inverted segment">
+            <p></p>
+        </div>
+
+        <!-- Heading -->
+        <div class="ui container">
+			<h4 class="ui huge centered aligned yellow bold header">
+				Past Games
+			</h4>
+        </div>
+
+		<!-- Bottom White Space-->
+        <div class="ui inverted segment">
+            <p></p>
+        </div>
+
+        <div class="ui calendar" id="date_calendar">
+            <div class="ui input left icon">
+                <i class="calendar icon"></i>
+                <input type="text" placeholder="Date" />
+            </div>
+        </div>
+
+        <!-- Custom scripts for this template -->
+        <script src="js/main.js"></script>
+
+		<%- include('components/statsPopup.ejs') %>
+    </body>
+</html>
