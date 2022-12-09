@@ -7,16 +7,6 @@ var $keyboardWrapper = $('.virtual-keyboard'),
 	$key_hint = $('.hint'),
 	$stats_button = $('#stats')
 
-function getQueryParams(){
-	const queryParamsString = window.location.search.substr(1);
-	return queryParamsString
-	.split('&')
-	.reduce((accumulator, singleQueryParam) => {
-		const [key, value] = singleQueryParam.split('=');
-		accumulator[key] = value;
-		return accumulator;
-	}, {});
-}
 
 function convertDateToDashFormat(date){
 	return date.getFullYear() + "-" + ("0"+(date.getMonth()+1)).slice(-2) +"-"+("0" + date.getDate()).slice(-2);
@@ -56,15 +46,12 @@ function deleteEvent(e) {
 
 function hintEvent(e) {
 	e.preventDefault();
-	const queryParams = getQueryParams();
-	const date = queryParams.date || convertDateToDashFormat(new Date());
-	post("/hint?date="+date, {}, 'post');
+	post("/hint?date="+formattedDate, {}, 'post');
 }
 
 function submitEvent(e) {
 	e.preventDefault();
-	const queryParams = getQueryParams();
-	const date = queryParams.date || convertDateToDashFormat(new Date());
+
 	var boxElements = document.querySelectorAll('[id ^= "box-"]');
 	var guessedPrompt = "";
 	for (var i = 0; i < boxElements.length; i++) {
@@ -73,9 +60,9 @@ function submitEvent(e) {
 		}
 		guessedPrompt += boxElements[i].innerText;
 	}
-	console.log(guessedPrompt);
+	
 
-	post('/?date='+date, { 'guessedPrompt': guessedPrompt }, 'post');
+	post('/?date='+formattedDate, { 'guessedPrompt': guessedPrompt }, 'post');
 };
 
 function fillPromptsEvent(e) {

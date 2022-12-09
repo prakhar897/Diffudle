@@ -25,7 +25,7 @@ app.set('trust proxy', true)
 app.get('/', async function (req, res) {
     try{
         
-        let formattedDate = req.query.date || AppUtils.convertDateFormat(new Date());
+        let formattedDate = AppUtils.convertDateFormat(req.query.date, new Date());
         let [user, gameStats] = await Promise.all([
             FirestoreClient.getCollection('users', req.ip),
             GameStatUtils.getGameStats(formattedDate)
@@ -68,12 +68,12 @@ app.get('/', async function (req, res) {
             res.render('finished', {summaryStats: summaryStats, attemptNumber: user.attemptNumberDateMap[formattedDate],
                 currentVisiblePositions: user.visiblePositionsDateMap[formattedDate], question: question, success: user.successDateMap[formattedDate],
                 name: question.name, twitterLink: twitterLink, gameSolvingPercentage: gameSolvingPercentage,
-                question1: question1, question2: question2, question3: question3, question4: question4, question5: question5, question6: question6 });
+                question1: question1, question2: question2, question3: question3, question4: question4, question5: question5, question6: question6, formattedDate: formattedDate });
         }
         else
             res.render('index', {summaryStats: summaryStats, attemptNumber: user.attemptNumberDateMap[formattedDate],
                 currentVisiblePositions: user.visiblePositionsDateMap[formattedDate], question: question, success: user.successDateMap[formattedDate],
-                name: question.name, twitterLink: twitterLink, gameSolvingPercentage: gameSolvingPercentage });
+                name: question.name, twitterLink: twitterLink, gameSolvingPercentage: gameSolvingPercentage, formattedDate: formattedDate });
 
     } catch (error) {
         let formattedDate = req.query.date || AppUtils.convertDateFormat(new Date());
@@ -87,8 +87,7 @@ app.get('/', async function (req, res) {
 
 app.post('/', async function (req, res) {
     try{
-        let formattedDate = req.query.date || AppUtils.convertDateFormat(new Date());
-
+        let formattedDate =  AppUtils.convertDateFormat(req.query.date, new Date());
         const user = await FirestoreClient.getCollection('users', req.ip);
         const questionRefId = formattedDate + "--" + user.attemptNumberDateMap[formattedDate];
         const question = await FirestoreClient.getCollection('questions', questionRefId);
@@ -128,7 +127,7 @@ app.post('/', async function (req, res) {
 
 app.post('/hint', async function( req , res) {
     try{
-        let formattedDate = req.query.date || AppUtils.convertDateFormat(new Date());
+        let formattedDate = AppUtils.convertDateFormat(req.query.date, new Date());
         const user = await FirestoreClient.getCollection('users', req.ip);
         const questionRefId = formattedDate + "--" + user.attemptNumberDateMap[formattedDate];
         const question = await FirestoreClient.getCollection('questions', questionRefId);
