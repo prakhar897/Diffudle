@@ -18,6 +18,10 @@ function getQueryParams(){
 	}, {});
 }
 
+function convertDateToDashFormat(date){
+	return date.getFullYear() + "-" + ("0"+(date.getMonth()+1)).slice(-2) +"-"+("0" + date.getDate()).slice(-2);
+}
+
 function post(path, params, method) {
 	const form = document.createElement('form');
 	form.method = method;
@@ -53,12 +57,14 @@ function deleteEvent(e) {
 function hintEvent(e) {
 	e.preventDefault();
 	const queryParams = getQueryParams();
-	post("/hint?date="+queryParams.date, {}, 'post');
+	const date = queryParams.date || convertDateToDashFormat(new Date());
+	post("/hint?date="+date, {}, 'post');
 }
 
 function submitEvent(e) {
 	e.preventDefault();
 	const queryParams = getQueryParams();
+	const date = queryParams.date || convertDateToDashFormat(new Date());
 	var boxElements = document.querySelectorAll('[id ^= "box-"]');
 	var guessedPrompt = "";
 	for (var i = 0; i < boxElements.length; i++) {
@@ -69,7 +75,7 @@ function submitEvent(e) {
 	}
 	console.log(guessedPrompt);
 
-	post('/?date='+queryParams.date, { 'guessedPrompt': guessedPrompt }, 'post');
+	post('/?date='+date, { 'guessedPrompt': guessedPrompt }, 'post');
 };
 
 function fillPromptsEvent(e) {
@@ -139,7 +145,7 @@ $('#date_calendar')
 	maxDate: endDate,
 	onChange: function (date, text) {
 		//Month is 0 indexed. JS is fking stupid. Also leading zero's need to added in date and month.
-		var dateISO = date.getFullYear() + "-" + ("0"+(date.getMonth()+1)).slice(-2) +"-"+("0" + date.getDate()).slice(-2);
+		var dateISO = convertDateToDashFormat(date);
 		post('/archive?date='+dateISO, {}, 'post');
 		$('#please_wait').show();
 	}

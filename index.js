@@ -49,6 +49,8 @@ app.get('/', async function (req, res) {
 
         const questionRefId = formattedDate + "--" + user.attemptNumberDateMap[formattedDate];
         const question = await FirestoreClient.getCollection('questions', questionRefId);
+        console.log(questionRefId);
+        console.log(question);
 
         const summaryStats = StatUtils.calculateSummaryStats(user.attemptNumberDateMap, user.successDateMap);
         const twitterLink = StatUtils.shareTwitterLink(user.visiblePositionsDateMap[formattedDate], question.name, formattedDate, user.attemptNumberDateMap[formattedDate]);
@@ -88,11 +90,10 @@ app.get('/', async function (req, res) {
 app.post('/', async function (req, res) {
     try{
         let formattedDate = req.query.date || AppUtils.convertDateFormat(new Date());
+
         const user = await FirestoreClient.getCollection('users', req.ip);
         const questionRefId = formattedDate + "--" + user.attemptNumberDateMap[formattedDate];
         const question = await FirestoreClient.getCollection('questions', questionRefId);
-        console.log(questionRefId);
-        console.log(question);
         const guessedPrompt = req.body.guessedPrompt;
 
         let newVisiblePositions = [];
