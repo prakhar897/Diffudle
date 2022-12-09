@@ -49,8 +49,6 @@ app.get('/', async function (req, res) {
 
         const questionRefId = formattedDate + "--" + user.attemptNumberDateMap[formattedDate];
         const question = await FirestoreClient.getCollection('questions', questionRefId);
-        console.log(questionRefId);
-        console.log(question);
 
         const summaryStats = StatUtils.calculateSummaryStats(user.attemptNumberDateMap, user.successDateMap);
         const twitterLink = StatUtils.shareTwitterLink(user.visiblePositionsDateMap[formattedDate], question.name, formattedDate, user.attemptNumberDateMap[formattedDate]);
@@ -112,6 +110,8 @@ app.post('/', async function (req, res) {
         }
 
         await FirestoreClient.save('users', req.ip, user);
+        console.log("Calling Update Stats. IP:" + req.ip + " AN:" + user.attemptNumberDateMap[formattedDate] + 
+        " SUCCC: " + user.successDateMap[formattedDate] + " Date: " + formattedDate);
         GameStatUtils.updateGameStats(formattedDate, user.attemptNumberDateMap[formattedDate], user.successDateMap[formattedDate]);
         res.redirect("/?date="+formattedDate);
 
@@ -171,6 +171,8 @@ app.post('/hint', async function( req , res) {
         }
 
         await FirestoreClient.save('users', req.ip, user);
+        console.log("Calling Update Stats. IP:" + req.ip + " AN:" + user.attemptNumberDateMap[formattedDate] + 
+        " SUCCC: " + user.successDateMap[formattedDate] + " Date: " + formattedDate);
         GameStatUtils.updateGameStats(formattedDate, user.attemptNumberDateMap[formattedDate], user.successDateMap[formattedDate]);
 
         res.redirect("/?date="+formattedDate);
