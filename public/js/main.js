@@ -128,6 +128,10 @@ $(function(){
 
 var startDate = new Date("2022-11-22");
 var endDate = new Date();
+
+$(document).ready(function(){
+	$('#please_wait').hide();
+});
 $('#date_calendar')
   .calendar({
     type: 'date',
@@ -137,7 +141,8 @@ $('#date_calendar')
 		//Month is 0 indexed. JS is fking stupid. Also leading zero's need to added in date and month.
 		var dateISO = date.getFullYear() + "-" + ("0"+(date.getMonth()+1)).slice(-2) +"-"+("0" + date.getDate()).slice(-2);
 		post('/archive?date='+dateISO, {}, 'post');
-	   },
+		$('#please_wait').show();
+	}
   })
 ;
 

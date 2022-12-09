@@ -31,8 +31,6 @@ app.get('/', async function (req, res) {
             GameStatUtils.getGameStats(formattedDate)
         ]);
 
-        console.log(req.query.date);
-
         if (!user) {
             let newUser = new User({}, {}, {});
             newUser.attemptNumberDateMap[formattedDate] = 1;
