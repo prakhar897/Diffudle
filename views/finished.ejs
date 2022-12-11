@@ -9,11 +9,11 @@
         <%- include('components/navbar.ejs') %>
 
         <% if(attemptNumber < 7 && success == true) {%>
-			<h2 class="ui center aligned bold orange header">
+			<h2 class="ui center aligned bold orange header OswaldFont">
 				CONGRATULATIONS!! YOU WIN. THE QUOTE WAS: <%=name.toUpperCase()%>.
 			</h2>
         <%} else if (attemptNumber >= 7){ %>		
-			<h2 class="ui center aligned bold orange header">
+			<h2 class="ui center aligned bold orange header OswaldFont">
 				NICE TRY!! THE QUOTE WAS: <%=name.toUpperCase()%>.
 			</h2>	
         <%}%>

@@ -3,39 +3,39 @@
     <i class="close icon"></i>
     <div class="content">
 
-        <h4 class="ui center aligned header">
+        <h4 class="ui center aligned header OswaldFont">
             Statistics
         </h4>
         <div class="ui doubling four statistics">
             <div class="statistic">
-                <div class="value">
+                <div class="value RobotoCondensedFont">
                     <%=summaryStats.played%>
                 </div>
-                <div class="label">
+                <div class="label RobotoCondensedFont">
                     Played
                 </div>
             </div>
             <div class="statistic">
-                <div class="value">
+                <div class="value RobotoCondensedFont">
                     <%=summaryStats.winPercentage%>%
                 </div>
-                <div class="label">
+                <div class="label RobotoCondensedFont">
                     Win Percentage
                 </div>
             </div>
             <div class="statistic">
-                <div class="value">
+                <div class="value RobotoCondensedFont">
                     <%=summaryStats.latestStreak%>
                 </div>
-                <div class="label">
+                <div class="label RobotoCondensedFont">
                     Latest Streak
                 </div>
             </div>
             <div class="statistic">
-                <div class="value">
+                <div class="value RobotoCondensedFont">
                     <%=summaryStats.maxStreak%>
                 </div>
-                <div class="label">
+                <div class="label RobotoCondensedFont">
                     Max Streak
                 </div>
             </div>
@@ -45,39 +45,39 @@
 
         <!-- Guess Distribution Histogram -->
         <div class="ui container">
-            <h4 class="ui center aligned header">
+            <h4 class="ui center aligned header OswaldFont">
                 Guess Distribution
             </h4>
 
             <div class="ui hidden divider"></div>
 
             <div class="ui grid statHistogram">
-                <div class="ui white four wide right aligned column "> <h4 class="ui black header"> 1 </h4> </div>
+                <div class="ui white four wide right aligned column "> <h4 class="ui black header RobotoCondensedFont"> 1 </h4> </div>
                 <div class="ui black <%=summaryStats.winHistogramNames[0]%> wide right aligned column statHistogramColored"><%=summaryStats.winDistribution[0]%> </div>	
             </div>
 
             <div class="ui grid statHistogram">
-                <div class="ui white four wide right aligned column"> <h4 class="ui black header"> 2 </h4> </div>
+                <div class="ui white four wide right aligned column"> <h4 class="ui black header RobotoCondensedFont"> 2 </h4> </div>
                 <div class="ui black <%=summaryStats.winHistogramNames[1]%> wide right aligned column statHistogramColored"> <%=summaryStats.winDistribution[1]%></div>	
             </div>
 
             <div class="ui grid statHistogram">
-                <div class="ui white four wide right aligned column"> <h4 class="ui black header"> 3 </h4> </div>
+                <div class="ui white four wide right aligned column"> <h4 class="ui black header RobotoCondensedFont"> 3 </h4> </div>
                 <div class="ui black <%=summaryStats.winHistogramNames[2]%> wide right aligned column statHistogramColored"> <%=summaryStats.winDistribution[2]%></div>	
             </div>
 
             <div class="ui grid statHistogram">
-                <div class="ui white four wide right aligned column"> <h4 class="ui black header"> 4 </h4> </div>
+                <div class="ui white four wide right aligned column"> <h4 class="ui black header RobotoCondensedFont"> 4 </h4> </div>
                 <div class="ui black <%=summaryStats.winHistogramNames[3]%> wide right aligned column statHistogramColored"> <%=summaryStats.winDistribution[3]%> </div>	
             </div>
 
             <div class="ui grid statHistogram">
-                <div class="ui white four wide right aligned column"> <h4 class="ui black header"> 5 </h4> </div>
+                <div class="ui white four wide right aligned column"> <h4 class="ui black header RobotoCondensedFont"> 5 </h4> </div>
                 <div class="ui black <%=summaryStats.winHistogramNames[4]%> wide right aligned column statHistogramColored"> <%=summaryStats.winDistribution[4]%> </div>	
             </div>
 
             <div class="ui grid statHistogram">
-                <div class="ui white four wide right aligned column"> <h4 class="ui black header"> 6 </h4> </div>
+                <div class="ui white four wide right aligned column"> <h4 class="ui black header RobotoCondensedFont"> 6 </h4> </div>
                 <div class="ui black <%=summaryStats.winHistogramNames[5]%> wide right aligned column statHistogramColored"> <%=summaryStats.winDistribution[5]%> </div>	
             </div>
             
@@ -89,7 +89,7 @@
         <% if( success == true || attemptNumber >= 7) {%>
             <div class="ui divider"></div>
 
-            <div class="ui center aligned container">
+            <div class="ui center aligned container RobotoCondensedFont">
                 <a class="ui twitter button" target="_blank" href= <%=twitterLink%>>
                     <i class="twitter icon"></i>
                     Share on Twitter

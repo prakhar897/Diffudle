@@ -5,7 +5,8 @@ var $keyboardWrapper = $('.virtual-keyboard'),
 	$outputField = $('.output input'),
 	actionKeys = $(".delete,.submit"),
 	$key_hint = $('.hint'),
-	$stats_button = $('#stats')
+	$stats_button = $('#stats'),
+	$howToPlay_button = $('#howToPlay')
 
 
 function convertDateToDashFormat(date){
@@ -115,6 +116,15 @@ $(function(){
 		$(".stats").modal('show');
 	});
 	$(".stats").modal({
+		closable: true
+	});
+});
+
+$(function(){
+	$howToPlay_button.click(function(){
+		$(".howToPlay").modal('show');
+	});
+	$(".howToPlay").modal({
 		closable: true
 	});
 });

@@ -199,6 +199,10 @@ app.post("/archive",async function( req , res) {
     res.redirect("/?date="+req.query.date);
 });
 
+app.get('*', function(req, res){
+    res.render('404');
+  });
+
 app.listen(process.env.PORT, function (req, res) {
     console.log(`Listening on port ${process.env.PORT}`);
 });

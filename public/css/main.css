@@ -56,3 +56,12 @@
 .statHistogramColored{
     border-radius: 5%;
 }
+
+.OswaldFont{
+    font-family: 'Oswald', sans-serif !important;
+    
+}
+
+.RobotoCondensedFont{
+    font-family: 'Roboto Condensed', sans-serif !important;
+}
