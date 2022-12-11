@@ -3,6 +3,8 @@ var app = express();
 var bodyParser = require('body-parser');
 const path = require('path')
 var dotenv = require('dotenv');
+var cookieParser = require('cookie-parser');
+
 
 var User = require('./models/user');
 var Question = require('./models/question');
@@ -17,6 +19,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json())
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
+app.use(cookieParser());
 
 //TODO: Remove after moving to cookies
 app.set('trust proxy', true)
@@ -26,17 +29,16 @@ app.get('/', async function (req, res) {
     try{
         
         let formattedDate = AppUtils.convertDateFormat(req.query.date, new Date());
-        let [user, gameStats] = await Promise.all([
-            FirestoreClient.getCollection('users', req.ip),
-            GameStatUtils.getGameStats(formattedDate)
-        ]);
+        let user = req.cookies.userData;
+        let gameStats = await GameStatUtils.getGameStats(formattedDate)
+    
 
         if (!user) {
             let newUser = new User({}, {}, {});
             newUser.attemptNumberDateMap[formattedDate] = 1;
             newUser.successDateMap[formattedDate] = false;
             newUser.visiblePositionsDateMap[formattedDate] = [];
-            await FirestoreClient.save('users',req.ip, newUser);
+            res.cookie("userData", newUser);
             user = newUser;
         }
 
@@ -44,8 +46,9 @@ app.get('/', async function (req, res) {
             user.attemptNumberDateMap[formattedDate] = 1;
             user.successDateMap[formattedDate] = false;
             user.visiblePositionsDateMap[formattedDate] = [];
-            await FirestoreClient.save('users', req.ip, user);
+            res.cookie("userData", user);
         }
+        
 
         const questionRefId = formattedDate + "--" + user.attemptNumberDateMap[formattedDate];
         const question = await FirestoreClient.getCollection('questions', questionRefId);
@@ -88,7 +91,7 @@ app.get('/', async function (req, res) {
 app.post('/', async function (req, res) {
     try{
         let formattedDate =  AppUtils.convertDateFormat(req.query.date, new Date());
-        const user = await FirestoreClient.getCollection('users', req.ip);
+        let user = req.cookies.userData;
         const questionRefId = formattedDate + "--" + user.attemptNumberDateMap[formattedDate];
         const question = await FirestoreClient.getCollection('questions', questionRefId);
         const guessedPrompt = req.body.guessedPrompt;
@@ -107,8 +110,7 @@ app.post('/', async function (req, res) {
         } else {
             user.attemptNumberDateMap[formattedDate]++;
         }
-
-        await FirestoreClient.save('users', req.ip, user);
+        res.cookie("userData", user);
         console.log("Calling Update Stats. IP:" + req.ip + " AN:" + user.attemptNumberDateMap[formattedDate] + 
         " SUCCC: " + user.successDateMap[formattedDate] + " Date: " + formattedDate);
         GameStatUtils.updateGameStats(formattedDate, user.attemptNumberDateMap[formattedDate], user.successDateMap[formattedDate]);
@@ -128,7 +130,8 @@ app.post('/', async function (req, res) {
 app.post('/hint', async function( req , res) {
     try{
         let formattedDate = AppUtils.convertDateFormat(req.query.date, new Date());
-        const user = await FirestoreClient.getCollection('users', req.ip);
+        let user = req.cookies.userData;
+        console.log(JSON.stringify(user));
         const questionRefId = formattedDate + "--" + user.attemptNumberDateMap[formattedDate];
         const question = await FirestoreClient.getCollection('questions', questionRefId);
 
@@ -169,7 +172,7 @@ app.post('/hint', async function( req , res) {
             user.attemptNumberDateMap[formattedDate]++;
         }
 
-        await FirestoreClient.save('users', req.ip, user);
+        res.cookie("userData", user);
         console.log("Calling Update Stats. IP:" + req.ip + " AN:" + user.attemptNumberDateMap[formattedDate] + 
         " SUCCC: " + user.successDateMap[formattedDate] + " Date: " + formattedDate);
         GameStatUtils.updateGameStats(formattedDate, user.attemptNumberDateMap[formattedDate], user.successDateMap[formattedDate]);
