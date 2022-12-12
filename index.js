@@ -190,7 +190,7 @@ app.post('/hint', async function( req , res) {
 });
 
 app.get("/archive",async function( req , res) {
-    let user = await FirestoreClient.getCollection('users', req.ip);    
+    let user = req.cookies.userData;    
     const summaryStats = StatUtils.calculateSummaryStats(user.attemptNumberDateMap, user.successDateMap);
     res.render('archiveCalender',{summaryStats: summaryStats, success: false, attemptNumber: 1});
 });
