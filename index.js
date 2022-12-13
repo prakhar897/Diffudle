@@ -29,29 +29,10 @@ app.get('/', async function (req, res) {
     try{
         
         let formattedDate = AppUtils.convertDateFormat(req.query.date, new Date());
-        let user = req.cookies.userData;
-        let gameStats = await GameStatUtils.getGameStats(formattedDate)
-    
-
-        if (!user) {
-            let newUser = new User({}, {}, {});
-            newUser.attemptNumberDateMap[formattedDate] = 1;
-            newUser.successDateMap[formattedDate] = false;
-            newUser.visiblePositionsDateMap[formattedDate] = [];
-            res.cookie("userData", newUser);
-            user = newUser;
-        }
-
-        if (user.attemptNumberDateMap[formattedDate] == null) {
-            user.attemptNumberDateMap[formattedDate] = 1;
-            user.successDateMap[formattedDate] = false;
-            user.visiblePositionsDateMap[formattedDate] = [];
-            res.cookie("userData", user);
-        }
-        
-
+        let user = AppUtils.getUserData(req.cookies.userData, formattedDate);
         const questionRefId = formattedDate + "--" + user.attemptNumberDateMap[formattedDate];
-        const question = await FirestoreClient.getCollection('questions', questionRefId);
+
+        const [question, gameStats] = await Promise.all([FirestoreClient.getCollection('questions', questionRefId), GameStatUtils.getGameStats(formattedDate)]);
 
         const summaryStats = StatUtils.calculateSummaryStats(user.attemptNumberDateMap, user.successDateMap);
         const twitterLink = StatUtils.shareTwitterLink(user.visiblePositionsDateMap[formattedDate], question.name, formattedDate, user.attemptNumberDateMap[formattedDate]);
@@ -91,7 +72,7 @@ app.get('/', async function (req, res) {
 app.post('/', async function (req, res) {
     try{
         let formattedDate =  AppUtils.convertDateFormat(req.query.date, new Date());
-        let user = req.cookies.userData;
+        let user = AppUtils.getUserData(req.cookies.userData, formattedDate);
         const questionRefId = formattedDate + "--" + user.attemptNumberDateMap[formattedDate];
         const question = await FirestoreClient.getCollection('questions', questionRefId);
         const guessedPrompt = req.body.guessedPrompt;
@@ -130,7 +111,7 @@ app.post('/', async function (req, res) {
 app.post('/hint', async function( req , res) {
     try{
         let formattedDate = AppUtils.convertDateFormat(req.query.date, new Date());
-        let user = req.cookies.userData;
+        let user = AppUtils.getUserData(req.cookies.userData, formattedDate);
         console.log(JSON.stringify(user));
         const questionRefId = formattedDate + "--" + user.attemptNumberDateMap[formattedDate];
         const question = await FirestoreClient.getCollection('questions', questionRefId);
@@ -190,7 +171,7 @@ app.post('/hint', async function( req , res) {
 });
 
 app.get("/archive",async function( req , res) {
-    let user = req.cookies.userData;    
+    let user = AppUtils.getUserData(req.cookies.userData, formattedDate);    
     const summaryStats = StatUtils.calculateSummaryStats(user.attemptNumberDateMap, user.successDateMap);
     res.render('archiveCalender',{summaryStats: summaryStats, success: false, attemptNumber: 1});
 });
