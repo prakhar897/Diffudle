@@ -171,6 +171,7 @@ app.post('/hint', async function( req , res) {
 });
 
 app.get("/archive",async function( req , res) {
+    let formattedDate = AppUtils.convertDateFormat(req.query.date, new Date());
     let user = AppUtils.getUserData(req.cookies.userData, formattedDate);    
     const summaryStats = StatUtils.calculateSummaryStats(user.attemptNumberDateMap, user.successDateMap);
     res.render('archiveCalender',{summaryStats: summaryStats, success: false, attemptNumber: 1});
