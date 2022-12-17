@@ -7,6 +7,15 @@ module.exports = {
         return queryDate;
     },
 
+    isQueryDateInPastOrPresent(queryDate,todayDate) {
+        todayDate.setDate(todayDate.getDate() + 2);
+        var todayDateFormatted = todayDate.toISOString().split('T')[0];
+        if(queryDate<=todayDateFormatted)
+            return true;
+        else
+            return false;
+    },
+
     getUserData(user,formattedDate){
         if (!user) {
             let newUser = new User({}, {}, {});

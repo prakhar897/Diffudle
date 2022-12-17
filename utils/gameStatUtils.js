@@ -9,7 +9,7 @@ module.exports = {
         let currentStats = await this.getGameStats(date);
         newStats = currentStats;
         
-        if (attemptNumber == 2){
+        if (attemptNumber == 2 || (attemptNumber == 1 && success == true)){
             newStats.players += 1;
         } 
         
