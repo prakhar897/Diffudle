@@ -29,7 +29,6 @@ app.get('/', async function (req, res) {
     try{
         
         let formattedDate = AppUtils.convertDateFormat(req.query.date, new Date());
-        console.log(AppUtils.isQueryDateInPastOrPresent(formattedDate, new Date()));
         if(!AppUtils.isQueryDateInPastOrPresent(formattedDate, new Date())){
             res.render('404');
         }
