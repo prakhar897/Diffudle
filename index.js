@@ -29,9 +29,6 @@ app.get('/', async function (req, res) {
     try{
         
         let formattedDate = AppUtils.convertDateFormat(req.query.date, new Date());
-        if(!AppUtils.isQueryDateInPastOrPresent(formattedDate, new Date())){
-            res.render('404');
-        }
         let user = AppUtils.getUserData(req.cookies.userData, formattedDate);
         const questionRefId = formattedDate + "--" + user.attemptNumberDateMap[formattedDate];
 
