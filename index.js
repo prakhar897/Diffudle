@@ -125,7 +125,7 @@ app.post('/hint', async function( req , res) {
         }
 
         const shuffledCanBeReveleadPostions = canBeReveleadPostions.sort(() => 0.5 - Math.random());
-        const noOfPositonsRevelead = Math.ceil([...question.name].filter(x => !x.includes("/")).length/8);
+        const noOfPositonsRevelead = Math.ceil([...question.name].filter(x => !x.includes("/")).length/10);
         let revealingPositions = shuffledCanBeReveleadPostions.slice(0, noOfPositonsRevelead);
 
         var guessedPrompt = "";
