@@ -29,8 +29,15 @@ app.get('/', async function (req, res) {
     try{
         
         let formattedDate = AppUtils.convertDateFormat(req.query.date, new Date());
+
+        if(formattedDate >= '2023-01-17'){
+            res.render('404');
+            return;
+        }
+
         let user = AppUtils.getUserData(req.cookies.userData, formattedDate);
         const questionRefId = formattedDate + "--" + user.attemptNumberDateMap[formattedDate];
+        
 
         const [question, gameStats] = await Promise.all([FirestoreClient.getCollection('questions', questionRefId), GameStatUtils.getGameStats(formattedDate)]);
 
